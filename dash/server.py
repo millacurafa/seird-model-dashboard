@@ -21,5 +21,6 @@ correlations = df[['Casos totales',
                   'Casos nuevos con sintomas',
                   'Casos nuevos sin sintomas']].corr()
                    
-px.imshow(correlations)
+correlate = px.imshow(correlations)
 
+demoplot = figure= px.scatter(px.data.iris(), x="sepal_width", y="sepal_length")
