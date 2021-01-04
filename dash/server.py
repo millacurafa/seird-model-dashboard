@@ -201,11 +201,11 @@ def plotlyrealgo(S, E, I, R, D):
 
 # Plots SEIRD real
 
-plotlyrealgo(susceptible,
-         exposed, 
-         infectious, 
-         recovered4, 
-         deaths)    
+#plotlyrealgo(susceptible,
+#         exposed, 
+#         infectious, 
+#         recovered4, 
+#         deaths)    
 
 # Defines derivatives
 
@@ -257,7 +257,7 @@ def plotsir(t, S, I, R):
                       xaxis_title='Date')
       return fig.show()
 
-plotsir(t, S, I, R)
+#plotsir(t, S, I, R)
 
 ##Plots SEIR
 
@@ -272,7 +272,7 @@ def plotseir(t, S, E, I, R):
                       yaxis_title='SEIR cases',
                       xaxis_title='Date')
       return fig.show()
-plotseir(t, S, E, I, R)
+#plotseir(t, S, E, I, R)
 
 ## Plots SEIRD
 
@@ -288,4 +288,4 @@ def plotseird(t, S, E, I, R, D):
                       xaxis_title='Date')
       return fig.show()
 
-plotseird(t, S, E, I, R, D)
+#plotseird(t, S, E, I, R, D)
