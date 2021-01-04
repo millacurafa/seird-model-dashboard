@@ -2,76 +2,65 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_bootstrap_components as dbc
-#from server import demoplot
 from dash.dependencies import Input, Output
 from datetime import date
 
-
-#import dash_table
-#import mydcc
-#from datetime import datetime as dt
-
 #imports backend
-##from tabs import sidepanel, tab1, tab2
-import pandas as pd
-import numpy  as np
-import plotly.express as px
-from scipy.integrate import odeint
+import server 
 
-#Imports national data
+# Creates sidebar and main_content
 
-df = pd.read_csv('https://raw.githubusercontent.com/MinCiencia/Datos-COVID19/master/output/producto5/TotalesNacionales_T.csv',
-                error_bad_lines=False
-                 )
-
-df= df.set_index('Fecha')
-
-#Checking for data correlations
-
-correlations = df[['Casos totales',
-                   'Casos recuperados',
-                   'Fallecidos',
-                   'Casos activos',
-                   'Casos nuevos totales',
-                  'Casos nuevos con sintomas',
-                  'Casos nuevos sin sintomas']].corr()
+sidebar =   dbc.Col(
+                html.Div([
+                        html.P("Select variables to display", className="lead"),
+                        html.Br(),
+                        dcc.Dropdown(
+                            options=[
+                                {'label': 'Susceptible', 'value': 'S'},
+                                {'label': 'Exposed', 'value': 'E'},
+                                {'label': 'Infectious', 'value': 'I'},
+                                {'label': 'Recovered', 'value': 'R'},
+                                {'label': 'Dead', 'value': 'D'},
+                            ],
+                            multi=True,
+                            value='MTL',
+                            
+                        ),
+                        html.Br(),
+                        dcc.DatePickerRange(
+                            id='date-picker-range',
+                            start_date=date(2020, 1, 1),
+                            end_date_placeholder_text='Select a date!'
+                        )
+                    ]),
+                    width=3,
+                    style= {
+                            "margin-left": "2rem",
+                            "padding": "2rem 1rem",
+                            "background-color": "#f8f9fa",
+                            "left":0,
+                            "top": 0,
+                            "bottom": 0,
+                        }
+                )
+            
+main_content = dbc.Col(html.Div(dcc.Graph(id='time-series')), 
+                        width=8,
+                        style = {
+                            "margin-left": "4rem",
+                            "margin-right": "2rem",
+                            "padding": "2rem 1rem",
+                        }
+                )
                    
 
 external_stylesheets = [dbc.themes.BOOTSTRAP]
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
-sidebar = html.Div([
-        id="page-sidebar",
-        html.P(
-            "Select variables to display", className="lead"
-        ),
-        dbc.Row(
-        dcc.Dropdown(
-            options=[
-                {'label': 'New York City', 'value': 'NYC'},
-                {'label': 'Montréal', 'value': 'MTL'},
-                {'label': 'San Francisco', 'value': 'SF'}
-            ],
-            multi=True,
-            value='MTL',
-            
-        )),
-        dbc.Row(dcc.DatePickerRange(
-            id='date-picker-range',
-            start_date=date(1997, 5, 3),
-            end_date_placeholder_text='Select a date!'
-        ))      
-    ],
-)
-
-content = html.Div(id="page-content")
-
 app.layout = html.Div([
 
     html.H1("Analisis Covid19 🇨🇱", style={'text-align': 'left'}),
-
-    
     dcc.Tabs(id='tabs-chosen', value='tab-1', children=[
         dcc.Tab(label='National', value='tab-1'),
         dcc.Tab(label='Regional', value='tab-2'),
@@ -86,20 +75,27 @@ app.layout = html.Div([
 def render_content(tab):
     if tab == 'tab-1':
         return html.Div([
-            sidebar,
-            content
+            dbc.Row([ 
+            sidebar, main_content
+            ])
         ])
     elif tab == 'tab-2':
         return html.Div([
-            dcc.Graph(px.imshow(correlations))
+            dbc.Row([ 
+            sidebar, main_content
+            ])
         ])
     elif tab == 'tab-3':
         return html.Div([
-            html.H3('Tab content 3')
+            dbc.Row([ 
+            sidebar, main_content
+            ])
         ])
     elif tab == 'tab-4':
         return html.Div([
-        html.H3('Tab content 4')
+            dbc.Row([ 
+            sidebar, main_content
+            ])
         ])
 
 
