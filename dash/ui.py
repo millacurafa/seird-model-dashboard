@@ -110,7 +110,20 @@ def render_content(tab):
                                 value='total',
                                 
                             )
-                        ]),  
+                        ]),
+                        dbc.FormGroup([
+                                dbc.Label("Additional setup"),
+                                dbc.Checklist(
+                                    options=[
+                                        {"label": "per 1000 inhabitants", "value": 1},
+                                        {"label": "logarithmic scale", "value": 2},
+                                        {"label": "moving average", "value": 3, "disabled": True},
+                                    ],
+                                    value=[],
+                                    id="switches-input",
+                                    switch=True,
+                                ),
+                            ]),  
                         dbc.FormGroup([
                             dbc.Label('Choose a date'),
                             html.Br(),
@@ -185,6 +198,19 @@ def render_content(tab):
                                 
                             )
                         ]),  
+                        dbc.FormGroup([
+                                dbc.Label("Additional setup"),
+                                dbc.Checklist(
+                                    options=[
+                                        {"label": "per 1000 inhabitants", "value": 1},
+                                        {"label": "logarithmic scale", "value": 2},
+                                        {"label": "moving average", "value": 3, "disabled": True},
+                                    ],
+                                    value=[],
+                                    id="switches-input",
+                                    switch=True,
+                                ),
+                            ]),
                         dbc.FormGroup([
                             dbc.Label('Choose a date'),
                             html.Br(),
@@ -281,40 +307,18 @@ def render_content(tab):
                                         tooltip={'always_visible': True, "placement": "bottom"}
                                     ),
                             ]),
-                            # this is the input where the R value can be changed over time.
-                            # It is implemented as a table where the date is in the first column,
-                            # and users can change the R value on that date in the second column.
                             dbc.FormGroup([
                                     dbc.Label('Reproduction rate R over time'),
-                                    dash_table.DataTable(
-                                        id='r0_table',
-                                        columns=[
-                                            {"name": "Date", "id": "Date"},
-                                            {"name": "R value", "id": "R value",
-                                            "editable": True, "type": "numeric"},
-                                        ],
-                                        data=[
-                                            {
-                                                "Date": i[0],
-                                                "R value": i[1],
-                                            }
-                                            for i in [("2020-01-01", 3.2), ("2020-02-01", 2.9), ("2020-03-01", 2.5), ("2020-04-01", 0.8), ("2020-05-01", 1.1), ("2020-06-01", 2.0), ("2020-07-01", 2.1), ("2020-08-01", 2.2), ("2020-09-01", 2.3)]
-                                        ],
-                                        style_cell_conditional=[
-                                            {'if': {'column_id': 'Date'},
-                                            'width': '5px'},
-                                            {'if': {'column_id': 'R value'},
-                                            'width': '10px'},
-                                        ],
-                                        style_cell={'textAlign': 'left',
-                                                    'fontSize': 16, 'font-family': 'Helvetica'},
-                                        style_header={
-                                            'backgroundColor': 'white',
-                                            'fontWeight': 'bold'
-                                        },
-
+                                    dcc.Slider(
+                                        id='r0_slider',
+                                        min=0.1,
+                                        max=10,
+                                        step=0.1,
+                                        value=5,
+                                        tooltip={'always_visible': True, "placement": "bottom"}
                                     ),
-                                ]),
+                            ]),
+                            
                             dbc.Button("Apply", id="submit-button-state",
                                     color="primary", block=True)
     
