@@ -66,7 +66,7 @@ def update_figure(_, national_dropdown,national_switches_input, start_date, end_
     [national_dropdown if national_dropdown != None else 'Casos totales']
     dff = dff.loc[(dff.index >= start_date) & (dff.index <= end_date)]
     fig = sv.px.line(dff,
-            y= dff[national_dropdown],
+            y= dff[[national_dropdown]],
             title= "National cases",
             labels= dict({'Casos totales':'Number of National cases',
                         'Fecha':'Date'})
@@ -83,7 +83,7 @@ def update_figure(_, national_dropdown,national_switches_input, start_date, end_
         elif n_switches==3:
             dff = sv.np.log10(dff/1000)
             return fig
-    else: return fig.show()
+    else: return fig
 
 @app.callback(
     Output('time_series_two', 'figure'),
@@ -113,7 +113,7 @@ def random(_,regional_dropdown,regional_cases,regional_switches_input,start_date
             labels= dict({'Casos nuevos con sintomas':'Number of cases by region',
                         'Fecha':'Date'})
             )
-    return fig.show()
+    return fig
 
 @app.callback(
     Output('time_series_three', 'figure'),
@@ -136,15 +136,14 @@ def plotlyrealgo(_, seird_dropdown,start_date,end_date):
     fig.update_layout(title='SEIRD model real data',
                       yaxis_title='SEIRD cases',
                       xaxis_title='Date')
-    return fig.show()
+    return fig
 
 @app.callback(
     Output('time_series_four', 'figure'),
     Input('submit_button_state_four', 'n_clicks'),
     [
             ##For tab_4
-            State('seirdmo_daypicker', 'start_date'),
-            State('seirdmo_daypicker', 'end_date'),
+            State('seirdmo_daypicker', 'date'),
             State('seirdmo_initial_cases', 'value'),
             State('seirdmo_population', 'value'),
             State('seirdmo_icu_beds', 'value'),
@@ -153,7 +152,7 @@ def plotlyrealgo(_, seird_dropdown,start_date,end_date):
             State('seirdmo_r0_slider', 'value')
     ])
 
-def plotseird(_, start_date,end_date, seirdmo_initial_cases,seirdmo_population,seirdmo_icu_beds,seirdmo_p_I_to_C,seirdmo_p_C_to_D,seirdmo_r0_slider):
+def plotseird(_, date, seirdmo_initial_cases,seirdmo_population,seirdmo_icu_beds,seirdmo_p_I_to_C,seirdmo_p_C_to_D,seirdmo_r0_slider):
     t, S, E, I, R, D = sv.t, sv.susceptible, sv.exposed, sv.infectious, sv.recovered4, sv.deaths
     fig = sv.go.Figure()
     fig.add_trace(sv.go.Line(name="Susceptible", x=t, y=S, line_color="dark blue"))
@@ -164,7 +163,7 @@ def plotseird(_, start_date,end_date, seirdmo_initial_cases,seirdmo_population,s
     fig.update_layout(title='SEIRD model',
                       yaxis_title='SEIRD cases',
                       xaxis_title='Date')
-    return fig.show()
+    return fig
 
 server = app.server
 app.config.suppress_callback_exceptions = True
