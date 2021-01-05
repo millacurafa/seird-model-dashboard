@@ -12,7 +12,12 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 ##Creates layout
 
 app.layout = html.Div([
-    html.Div(html.H1("Covid19 Analysis 🇨🇱", style={'text-align': 'left', 'color':'white'}), className = 'navbar navbar-primary bg-dark'),
+    html.Div([html.Img(src='/static/images/databio_logo.svg',
+        style={'display':'inline','width': '50%', 'max-width': '8rem'}),
+        html.H1("Covid19 Analysis 🇨🇱", style={'text-align': 'center', 'color':'white'}), 
+        html.P(['made with ❤ by ', html.A('millacurafa', href='https://github.com/millacurafa', style={'color':'white'})],
+        style={'text-align': 'center', 'color':'white'}),
+        ], className = 'navbar navbar-primary bg-dark'),
     dcc.Tabs(id='tabs_chosen', value='tab-1', children=[
         dcc.Tab(label='National', value='tab-1'),
         dcc.Tab(label='Regional', value='tab-2'),
@@ -63,25 +68,39 @@ def render_content(tab):
 ])
 def update_figure(_, national_dropdown,national_switches_input, start_date, end_date):
     dff = sv.df ##Creates a copy of the dataframe
-    [national_dropdown if national_dropdown != None else 'Casos totales']
-    dff = dff.loc[(dff.index >= start_date) & (dff.index <= end_date)]
+    #[national_dropdown if national_dropdown != None else 'Casos totales']
+    dff = dff.loc[(dff.index >= start_date) & (dff.index <= end_date), ]
+    dff = dff.filter(national_dropdown, axis=1)
+    n_switches = sv.np.sum(national_switches_input)
     fig = sv.px.line(dff,
-            y= dff[[national_dropdown]],
-            title= "National cases",
-            labels= dict({'Casos totales':'Number of National cases',
-                        'Fecha':'Date'})
-            )
-    
-    n_switches = len(national_switches_input)
+                        title= "National cases",
+                        labels= dict({'Casos totales':'Number of National cases',
+                                    'Fecha':'Date'})
+                        )
     if n_switches != 0:
         if n_switches==1:
             dff = dff/1000
+            fig = sv.px.line(dff,
+                        title= "National cases",
+                        labels= dict({'Casos totales':'Number of National cases',
+                                    'Fecha':'Date'})
+                        )
             return fig
         elif n_switches==2:
             dff = sv.np.log10(dff)
+            fig = sv.px.line(dff,
+                        title= "National cases",
+                        labels= dict({'Casos totales':'Number of National cases',
+                                    'Fecha':'Date'})
+                        )
             return fig
         elif n_switches==3:
             dff = sv.np.log10(dff/1000)
+            fig = sv.px.line(dff,
+                        title= "National cases",
+                        labels= dict({'Casos totales':'Number of National cases',
+                                    'Fecha':'Date'})
+                        )
             return fig
     else: return fig
 
@@ -96,8 +115,8 @@ def update_figure(_, national_dropdown,national_switches_input, start_date, end_
             State('regional_datepicker', 'end_date')
     ])
 
-def random(_,regional_dropdown,regional_cases,regional_switches_input,start_date,end_date):
-    if (regional_cases == 'total') or (regional_cases == 'active'):
+def regional(_,regional_dropdown,regional_cases,regional_switches_input,start_date,end_date):
+    if (regional_cases == 'active'):
         dff = sv.df_region_current
     elif regional_cases == 'deaths':
         dff = sv.df_deaths_current
@@ -106,11 +125,11 @@ def random(_,regional_dropdown,regional_cases,regional_switches_input,start_date
     elif regional_cases == 'pcr':
         dff = sv.df_pcr_current
 
-    dff = dff.loc[(dff.index >= start_date) & (dff.index <= end_date)]
+    dff = dff.loc[(dff.index >= start_date) & (dff.index <= end_date),]
+    dff = dff.filter(regional_dropdown, axis=1)
     fig = sv.px.line(dff,
-            y= dff[[regional_dropdown]],
             title= "Regional cases",
-            labels= dict({'Casos nuevos con sintomas':'Number of cases by region',
+            labels= dict({'Casos actuales':'Number of cases by region',
                         'Fecha':'Date'})
             )
     return fig
