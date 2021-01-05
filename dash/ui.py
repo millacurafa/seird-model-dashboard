@@ -83,7 +83,7 @@ def update_figure(_, national_dropdown,national_switches_input, start_date, end_
         elif n_switches==3:
             dff = sv.np.log10(dff/1000)
             return fig
-    else: return fig
+    else: return fig.show()
 
 @app.callback(
     Output('time_series_two', 'figure'),
@@ -113,7 +113,7 @@ def random(_,regional_dropdown,regional_cases,regional_switches_input,start_date
             labels= dict({'Casos nuevos con sintomas':'Number of cases by region',
                         'Fecha':'Date'})
             )
-    return fig
+    return fig.show()
 
 @app.callback(
     Output('time_series_three', 'figure'),
@@ -126,7 +126,17 @@ def random(_,regional_dropdown,regional_cases,regional_switches_input,start_date
     ])
 
 def random1(_,seird_dropdown,start_date,end_date):
-    print('')
+    dff = dff.loc[(dff.index >= start_date) & (dff.index <= end_date)]    
+    fig = go.Figure()
+    fig.add_trace(go.Line(name="Susceptible", x=S.index, y=np.log10(S.iloc[:, 0]), line_color="dark blue"))
+    fig.add_trace(go.Line(name="Exposed", x=E.index, y=np.log10(E.iloc[:, 0]), line_color="gold"))
+    fig.add_trace(go.Line(name="Infectious", x=I.index, y=np.log10(I.iloc[:, 0]), line_color="red"))
+    fig.add_trace(go.Line(name="Recovered", x=R.index, y=np.log10(R.iloc[:, 0]), line_color="green"))
+    fig.add_trace(go.Line(name="Deaths", x=D.index, y=np.log10(D.iloc[:, 0]), line_color="black"))
+    fig.update_layout(title='SEIRD model real data',
+                      yaxis_title='SEIRD cases',
+                      xaxis_title='Date')
+    return fig.show()
 
 @app.callback(
     Output('time_series_four', 'figure'),
@@ -144,7 +154,17 @@ def random1(_,seird_dropdown,start_date,end_date):
     ])
 
 def random2():
-    print('')
+    dff = dff.loc[(dff.index >= start_date) & (dff.index <= end_date)]    
+    fig = go.Figure()
+    fig.add_trace(go.Line(name="Susceptible", x=S.index, y=np.log10(S.iloc[:, 0]), line_color="dark blue"))
+    fig.add_trace(go.Line(name="Exposed", x=E.index, y=np.log10(E.iloc[:, 0]), line_color="gold"))
+    fig.add_trace(go.Line(name="Infectious", x=I.index, y=np.log10(I.iloc[:, 0]), line_color="red"))
+    fig.add_trace(go.Line(name="Recovered", x=R.index, y=np.log10(R.iloc[:, 0]), line_color="green"))
+    fig.add_trace(go.Line(name="Deaths", x=D.index, y=np.log10(D.iloc[:, 0]), line_color="black"))
+    fig.update_layout(title='SEIRD model real data',
+                      yaxis_title='SEIRD cases',
+                      xaxis_title='Date')
+    return fig.show()
 
 server = app.server
 app.config.suppress_callback_exceptions = True
