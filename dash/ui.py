@@ -108,7 +108,7 @@ def random(_,regional_dropdown,regional_cases,regional_switches_input,start_date
 
     dff = dff.loc[(dff.index >= start_date) & (dff.index <= end_date)]
     fig = sv.px.line(dff,
-            y= dff[regional_dropdown],
+            y= dff[[regional_dropdown]],
             title= "Regional cases",
             labels= dict({'Casos nuevos con sintomas':'Number of cases by region',
                         'Fecha':'Date'})
@@ -124,15 +124,15 @@ def random(_,regional_dropdown,regional_cases,regional_switches_input,start_date
             State('seird_datepicker', 'start_date'),
             State('seird_datepicker', 'end_date')
     ])
-
-def random1(_,seird_dropdown,start_date,end_date):
-    dff = dff.loc[(dff.index >= start_date) & (dff.index <= end_date)]    
-    fig = go.Figure()
-    fig.add_trace(go.Line(name="Susceptible", x=S.index, y=np.log10(S.iloc[:, 0]), line_color="dark blue"))
-    fig.add_trace(go.Line(name="Exposed", x=E.index, y=np.log10(E.iloc[:, 0]), line_color="gold"))
-    fig.add_trace(go.Line(name="Infectious", x=I.index, y=np.log10(I.iloc[:, 0]), line_color="red"))
-    fig.add_trace(go.Line(name="Recovered", x=R.index, y=np.log10(R.iloc[:, 0]), line_color="green"))
-    fig.add_trace(go.Line(name="Deaths", x=D.index, y=np.log10(D.iloc[:, 0]), line_color="black"))
+    
+def plotlyrealgo(_, seird_dropdown,start_date,end_date):
+    S, E, I, R, D = sv.susceptible, sv.exposed, sv.infectious, sv.recovered4, sv.deaths
+    fig = sv.go.Figure()
+    fig.add_trace(sv.go.Line(name="Susceptible", x=S.index.loc[(S.index >= start_date) & (S.index <= end_date)], y=S.iloc[:, 0], line_color="dark blue"))
+    fig.add_trace(sv.go.Line(name="Exposed", x=E.index.loc[(E.index >= start_date) & (E.index <= end_date)], y=E.iloc[:, 0], line_color="gold"))
+    fig.add_trace(sv.go.Line(name="Infectious", x=I.index.loc[(I.index >= start_date) & (I.index <= end_date)], y=I.iloc[:, 0], line_color="red"))
+    fig.add_trace(sv.go.Line(name="Recovered", x=R.index.loc[(R.index >= start_date) & (R.index <= end_date)], y=R.iloc[:, 0], line_color="green"))
+    fig.add_trace(sv.go.Line(name="Deaths", x=D.index.loc[(D.index >= start_date) & (D.index <= end_date)], y=D.iloc[:, 0], line_color="black"))
     fig.update_layout(title='SEIRD model real data',
                       yaxis_title='SEIRD cases',
                       xaxis_title='Date')
@@ -153,15 +153,15 @@ def random1(_,seird_dropdown,start_date,end_date):
             State('seirdmo_r0_slider', 'value')
     ])
 
-def random2():
-    dff = dff.loc[(dff.index >= start_date) & (dff.index <= end_date)]    
-    fig = go.Figure()
-    fig.add_trace(go.Line(name="Susceptible", x=S.index, y=np.log10(S.iloc[:, 0]), line_color="dark blue"))
-    fig.add_trace(go.Line(name="Exposed", x=E.index, y=np.log10(E.iloc[:, 0]), line_color="gold"))
-    fig.add_trace(go.Line(name="Infectious", x=I.index, y=np.log10(I.iloc[:, 0]), line_color="red"))
-    fig.add_trace(go.Line(name="Recovered", x=R.index, y=np.log10(R.iloc[:, 0]), line_color="green"))
-    fig.add_trace(go.Line(name="Deaths", x=D.index, y=np.log10(D.iloc[:, 0]), line_color="black"))
-    fig.update_layout(title='SEIRD model real data',
+def plotseird(_, start_date,end_date, seirdmo_initial_cases,seirdmo_population,seirdmo_icu_beds,seirdmo_p_I_to_C,seirdmo_p_C_to_D,seirdmo_r0_slider):
+    t, S, E, I, R, D = sv.t, sv.susceptible, sv.exposed, sv.infectious, sv.recovered4, sv.deaths
+    fig = sv.go.Figure()
+    fig.add_trace(sv.go.Line(name="Susceptible", x=t, y=S, line_color="dark blue"))
+    fig.add_trace(sv.go.Line(name="Exposed", x=t, y=E, line_color="gold"))
+    fig.add_trace(sv.go.Line(name="Infectious", x=t, y=I, line_color="red"))
+    fig.add_trace(sv.go.Line(name="Recovered", x=t, y=R, line_color="green"))
+    fig.add_trace(sv.go.Line(name="Deaths", x=t, y=D, line_color="black"))
+    fig.update_layout(title='SEIRD model',
                       yaxis_title='SEIRD cases',
                       xaxis_title='Date')
     return fig.show()
