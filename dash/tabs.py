@@ -5,14 +5,38 @@ from datetime import date as dt
 
 #Tabs to display
 
-main_content = dbc.Col(html.Div(dcc.Graph(id='time-series')), 
+## Main content one
+main_content_one = dbc.Col(html.Div(dcc.Graph(id='time_series_one')), 
             width=8,
             style = {
                             "margin-left": "4rem",
                             "margin-right": "2rem",
                             "padding": "2rem 1rem",
             })
-
+## Main content two
+main_content_two = dbc.Col(html.Div(dcc.Graph(id='time_series_two')), 
+            width=8,
+            style = {
+                            "margin-left": "4rem",
+                            "margin-right": "2rem",
+                            "padding": "2rem 1rem",
+            })
+## Main content three
+main_content_three = dbc.Col(html.Div(dcc.Graph(id='time_series_three')), 
+            width=8,
+            style = {
+                            "margin-left": "4rem",
+                            "margin-right": "2rem",
+                            "padding": "2rem 1rem",
+            })  
+## Main content four
+main_content_four = dbc.Col(html.Div(dcc.Graph(id='time_series_four')), 
+            width=8,
+            style = {
+                            "margin-left": "4rem",
+                            "margin-right": "2rem",
+                            "padding": "2rem 1rem",
+            })                      
 ## Tab 1
 
 tab_1 = dbc.Row([ 
@@ -54,13 +78,13 @@ tab_1 = dbc.Row([
                             dbc.Label('Choose a date'),
                             html.Br(),
                             dcc.DatePickerRange(
-                                id='date_picker_range',
+                                id='national_datepicker',
                                 start_date=dt(2020, 1, 1),
                                 display_format="DD.MM.YYYY",
                                 end_date_placeholder_text='Select a date!'
                             )
                         ]),
-                        dbc.Button("Apply", id="submit_button_state",
+                        dbc.Button("Apply", id="submit_button_state_one",
                                 color="primary", block=True)
                     ]),
                     width=3,
@@ -72,7 +96,7 @@ tab_1 = dbc.Row([
                             "top": 0,
                             "bottom": 0,
                         }
-                ), main_content
+                ), main_content_one
             ])
 
 ## Tab 2
@@ -151,7 +175,7 @@ tab_2 = dbc.Row([
                                 id='regional_datepicker'
                             )
                         ]),
-                        dbc.Button("Apply", id="submit_button_state",
+                        dbc.Button("Apply", id="submit_button_state_two",
                                 color="primary", block=True)
                     ]),
                     width=3,
@@ -165,7 +189,7 @@ tab_2 = dbc.Row([
                         }
                 ), 
             
-            main_content
+            main_content_two
             ]),
 
 ## Tab 3
@@ -202,7 +226,7 @@ tab_3 = dbc.Row([
                                 id='seird_datepicker'
                             )
                         ]),
-                        dbc.Button("Apply", id="submit_button_state",
+                        dbc.Button("Apply", id="submit_button_state_three",
                                 color="primary", block=True)
                     ]),
                     width=3,
@@ -214,7 +238,8 @@ tab_3 = dbc.Row([
                             "top": 0,
                             "bottom": 0,
                         }
-                )
+                ),
+                main_content_three
 ])
 ## Tab 4
 
@@ -294,7 +319,7 @@ tab_4 = dbc.Row([
                                     ),
                             ]),
                             
-                            dbc.Button("Apply", id="submit_button_state",
+                            dbc.Button("Apply", id="submit_button_state_four",
                                     color="primary", block=True)
     
                     ]),
@@ -308,7 +333,7 @@ tab_4 = dbc.Row([
                             "bottom": 0,
                         }
                 ),
-            main_content
+            main_content_four
             ])
 
 ## Tab 5
@@ -352,7 +377,7 @@ Additional variables need to be used, such as:
             className="jumbotron bg-white text-dark"
         ),
         ),
-            dbc.Col(# first, a jumbotron for the description and title
+        dbc.Col(# first, a jumbotron for the description and title
         dbc.Jumbotron(
             [
                 dbc.Container(
@@ -395,5 +420,5 @@ Additional variables need to be used, such as:
             className="jumbotron bg-white text-dark"
         ),
         )
-            ])
+    ])
             
