@@ -12,7 +12,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 ##Creates layout
 
 app.layout = html.Div([
-    html.H1("Covid19 Analysis 🇨🇱", style={'text-align': 'left'}),
+    html.Div(html.H1("Covid19 Analysis 🇨🇱", style={'text-align': 'left', 'color':'white'}), className = 'navbar navbar-primary bg-dark'),
     dcc.Tabs(id='tabs_chosen', value='tab-1', children=[
         dcc.Tab(label='National', value='tab-1'),
         dcc.Tab(label='Regional', value='tab-2'),

@@ -63,6 +63,7 @@ tab_1 = dbc.Row([
                         ]),
                         dbc.FormGroup([
                                 dbc.Label("Additional setup"),
+                                html.Br(),
                                 dbc.Checklist(
                                     options=[
                                         {"label": "per 1000 inhabitants", "value": 1},
