@@ -7,8 +7,36 @@ from plotly.graph_objs.scatter.marker import Line
 import plotly.express as px
 from scipy.integrate import odeint
 
+##Imports regional data
+df_city_current = pd.read_csv("https://raw.githubusercontent.com/MinCiencia/Datos-COVID19/master/output/producto25/CasosActualesPorComuna_std.csv")
 
-#Imports national data
+# regional daily active cases
+
+df_region_current = df_city_current[df_city_current["Comuna"] == "Total"]
+
+df_region_current = df_region_current.pivot[["Region", "Fecha", "Casos actuales"]](index='Fecha', columns='Region', values='Casos actuales')
+
+###Deaths
+
+df_city_deaths = pd.read_csv("https://raw.githubusercontent.com/MinCiencia/Datos-COVID19/master/output/producto38/CasosFallecidosPorComuna_std.csv")
+
+df_deaths_region = df_city_deaths[df_city_current['Comuna'] == 'Total'].groupby('Region')['Casos fallecidos'].sum()     
+
+df_deaths_current = df_city_deaths.pivot[['Region', 'Fecha', 'Casos fallecidos']](index='Fecha', columns='Region', values='Casos fallecidos')
+
+###Number of PCR exams
+
+df_pcr_region = pd.read_csv("https://raw.githubusercontent.com/MinCiencia/Datos-COVID19/master/output/producto7/PCR_std.csv")
+
+df_pcr_current = df_pcr_region[['Region', 'fecha', 'numero']].pivot(index='fecha', columns='Region', values='numero')
+
+
+###Critical patients
+df_uci_region = pd.read_csv("https://raw.githubusercontent.com/MinCiencia/Datos-COVID19/master/output/producto8/UCI_std.csv")
+
+df_uci_current = df_uci_region[['Region', 'fecha', 'numero']].pivot(index='fecha', columns='Region', values='numero')
+
+##Imports national data
 
 df = pd.read_csv('https://raw.githubusercontent.com/MinCiencia/Datos-COVID19/master/output/producto5/TotalesNacionales_T.csv',
                 error_bad_lines=False

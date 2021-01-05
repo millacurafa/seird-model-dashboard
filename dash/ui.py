@@ -4,11 +4,12 @@ from tabs import *
 #imports backend
 import server as sv
 
-
+## Uses bootstrap stylesheet
 external_stylesheets = [dbc.themes.BOOTSTRAP]
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
+##Creates layout
 
 app.layout = html.Div([
     html.H1("Covid19 Analysis 🇨🇱", style={'text-align': 'left'}),
@@ -22,6 +23,7 @@ app.layout = html.Div([
     html.Div(id='tabs_content')
 ])
 
+##Generates callbacks
 @app.callback(        
     Output('tabs_content', 'children'),
     Input('tabs_chosen', 'value')
@@ -52,14 +54,36 @@ def render_content(tab):
  Output('time_series_one', 'figure'),
  Input('submit_button_state_one', 'n_clicks'),
  [
-            ##For tab_1
-            State('national_dropdown', 'value'),
-            State('national_switches_input', 'value'),
-            State('national_datepicker', 'date')
+    ##For tab_1
+    State('national_dropdown', 'value'),
+    State('national_switches_input', 'value'),
+    State('national_datepicker', 'start_date'),
+    State('national_datepicker', 'end_date')
            
 ])
-#def plot():
-#    sv.px.scatter(px.data.iris(), x="sepal_width", y="sepal_length"
+def update_figure(_, national_dropdown,national_switches_input, start_date, end_date):
+    dff = sv.df ##Creates a copy of the dataframe
+    [national_dropdown if national_dropdown != None else 'Casos totales']
+    dff = dff.loc[(dff.index >= start_date) & (dff.index <= end_date)]
+    fig = sv.px.line(dff,
+            y= dff[national_dropdown],
+            title= "National cases",
+            labels= dict({'Casos totales':'Number of National cases',
+                        'Fecha':'Date'})
+            )
+    
+    n_switches = len(national_switches_input)
+    if n_switches != 0:
+        if n_switches==1:
+            dff = dff/1000
+            return fig
+        elif n_switches==2:
+            dff = sv.np.log10(dff)
+            return fig
+        elif n_switches==3:
+            dff = sv.np.log10(dff/1000)
+            return fig
+    else: return fig
 
 @app.callback(
     Output('time_series_two', 'figure'),
@@ -68,26 +92,49 @@ def render_content(tab):
             State('regional_dropdown', 'value'),
             State('regional_cases', 'value'),
             State('regional_switches_input', 'value'),
-            State('regional_datepicker', 'date')
+            State('regional_datepicker', 'start_date'),
+            State('regional_datepicker', 'end_date')
     ])
+
+def random(_,regional_dropdown,regional_cases,regional_switches_input,start_date,end_date):
+    if (regional_cases == 'total') or (regional_cases == 'active'):
+        dff = sv.df_region_current
+    elif regional_cases == 'deaths':
+        dff = sv.df_deaths_current
+    elif regional_cases == 'uci':
+        dff = sv.df_uci_current   
+    elif regional_cases == 'pcr':
+        dff = sv.df_pcr_current
+
+    dff = dff.loc[(dff.index >= start_date) & (dff.index <= end_date)]
+    fig = sv.px.line(dff,
+            y= dff[regional_dropdown],
+            title= "Regional cases",
+            labels= dict({'Casos nuevos con sintomas':'Number of cases by region',
+                        'Fecha':'Date'})
+            )
+    return fig
 
 @app.callback(
     Output('time_series_three', 'figure'),
     Input('submit_button_state_three', 'n_clicks'),
     [
             ##For tab_3
-            State('seird-dropdown', 'value'),
-            State('seird_datepicker', 'date')
+            State('seird_dropdown', 'value'),
+            State('seird_datepicker', 'start_date'),
+            State('seird_datepicker', 'end_date')
     ])
 
-
+def random1(_,seird_dropdown,start_date,end_date):
+    print('')
 
 @app.callback(
     Output('time_series_four', 'figure'),
     Input('submit_button_state_four', 'n_clicks'),
     [
             ##For tab_4
-            State('seirdmo_daypicker', 'date'),
+            State('seirdmo_daypicker', 'start_date'),
+            State('seirdmo_daypicker', 'end_date'),
             State('seirdmo_initial_cases', 'value'),
             State('seirdmo_population', 'value'),
             State('seirdmo_icu_beds', 'value'),
@@ -95,6 +142,9 @@ def render_content(tab):
             State('seirdmo_p_C_to_D', 'value'),
             State('seirdmo_r0_slider', 'value')
     ])
+
+def random2():
+    print('')
 
 server = app.server
 app.config.suppress_callback_exceptions = True

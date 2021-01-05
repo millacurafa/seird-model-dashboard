@@ -49,14 +49,14 @@ tab_1 = dbc.Row([
                             html.Br(),
                             dcc.Dropdown(
                                 options=[
-                                    {'label': 'Total cases', 'value': 'total'},
-                                    {'label': 'Active cases', 'value': 'active'},
-                                    {'label': 'Deaths', 'value': 'deaths'},
-                                    {'label': 'Recovered', 'value': 'recovered'},
-                                    {'label': 'Total PCR exams', 'value': 'pcr'},
+                                    {'label': 'Total cases', 'value': 'Casos totales'},
+                                    {'label': 'Active cases', 'value': 'Casos activos'},
+                                    {'label': 'Deaths', 'value': 'Fallecidos'},
+                                    {'label': 'Recovered', 'value': 'Casos recuperados'},
+                                 #   {'label': 'Total PCR exams', 'value': 'pcr'},
                                 ],
                                 multi=True,
-                                value='total',
+                                value='Casos totales',
                                 id= 'national_dropdown',
                                 
                             )
@@ -80,7 +80,8 @@ tab_1 = dbc.Row([
                             dcc.DatePickerRange(
                                 id='national_datepicker',
                                 start_date=dt(2020, 1, 1),
-                                display_format="DD.MM.YYYY",
+                                end_date=dt(2020, 12, 31),
+                                display_format="YYYY-MM-DD",
                                 end_date_placeholder_text='Select a date!'
                             )
                         ]),
@@ -142,7 +143,7 @@ tab_2 = dbc.Row([
                                     {'label': 'Total cases', 'value': 'total'},
                                     {'label': 'Active cases', 'value': 'active'},
                                     {'label': 'Deaths', 'value': 'deaths'},
-                                    {'label': 'Recovered', 'value': 'recovered'},
+                                    {'label': 'Casos criticos', 'value': 'uci'},
                                     {'label': 'Total PCR exams', 'value': 'pcr'},
                                 ],
                                 multi=False,
@@ -170,7 +171,8 @@ tab_2 = dbc.Row([
                             html.Br(),
                             dcc.DatePickerRange(
                                 start_date=dt(2020, 1, 1),
-                                display_format="DD.MM.YYYY",
+                                end_date=dt(2020, 12, 31),
+                                display_format="YYYY-MM-DD",
                                 end_date_placeholder_text='Select a date!',
                                 id='regional_datepicker'
                             )
@@ -221,7 +223,8 @@ tab_3 = dbc.Row([
                             html.Br(),
                             dcc.DatePickerRange(
                                 start_date=dt(2020, 1, 1),
-                                display_format="DD.MM.YYYY",
+                                end_date=dt(2020, 12, 31),
+                                display_format="YYYY-MM-DD",
                                 end_date_placeholder_text='Select a date!',
                                 id='seird_datepicker'
                             )
@@ -253,10 +256,10 @@ tab_4 = dbc.Row([
                             html.Br(),
                             dcc.DatePickerSingle(
                                     day_size=39,  # how big the date picker appears
-                                    display_format="DD.MM.YYYY",
+                                    display_format="YYYY-MM-DD",
                                     date='2020-01-01',
-                                    min_date_allowed=dt(2020, 12, 1),
-                                    max_date_allowed=dt(2020, 5, 31),
+                                    min_date_allowed=dt(2020, 1, 1),
+                                    max_date_allowed=dt(2021, 1, 5),
                                     initial_visible_month=dt(2020, 1, 15),
                                     placeholder="test",
                                     id='seirdmo_daypicker',
