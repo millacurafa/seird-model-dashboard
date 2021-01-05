@@ -7,6 +7,7 @@ from plotly.graph_objs.scatter.marker import Line
 import plotly.express as px
 from scipy.integrate import odeint
 
+
 #Imports national data
 
 df = pd.read_csv('https://raw.githubusercontent.com/MinCiencia/Datos-COVID19/master/output/producto5/TotalesNacionales_T.csv',
@@ -209,7 +210,7 @@ def plotlyrealgo(S, E, I, R, D):
 
 # Defines derivatives
 
-def deriv(y, t, N, beta, gamma, delta, alpha, rho):
+def derivate(y, t, N, beta, gamma, delta, alpha, rho):
     S, E, I, R, D = y
     dSdt = -beta * S * I / N
     dEdt = beta * S * I / N - delta * E
@@ -240,7 +241,7 @@ t = np.linspace(0, 700) # Grid of time points (in days)
 y0 = S0, E0, I0, R0, D0 # Initial conditions vector
 
 # Integrate the SIR equations over the time grid, t.
-ret = odeint(deriv, y0, t, args=(N, beta, gamma, delta, alpha, rho))
+ret = odeint(derivate, y0, t, args=(N, beta, gamma, delta, alpha, rho))
 S, E, I, R, D = ret.T
 
 ## Plots SIR model
