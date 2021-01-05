@@ -211,28 +211,9 @@ susceptible= pd.DataFrame(susceptible['Casos susceptibles totales'], columns=['C
 #                        xaxis_title='Date'
 #                       )           
 
-# Defines plot for model
 
-#def plotlyrealgo(S, E, I, R, D):
-#    
-#    fig = go.Figure()
-#    fig.add_trace(go.Line(name="Susceptible", x=S.index, y=np.log10(S.iloc[:, 0]), line_color="dark blue"))
-#    fig.add_trace(go.Line(name="Exposed", x=E.index, y=np.log10(E.iloc[:, 0]), line_color="gold"))
-#    fig.add_trace(go.Line(name="Infectious", x=I.index, y=np.log10(I.iloc[:, 0]), line_color="red"))
-#    fig.add_trace(go.Line(name="Recovered", x=R.index, y=np.log10(R.iloc[:, 0]), line_color="green"))
-#    fig.add_trace(go.Line(name="Deaths", x=D.index, y=np.log10(D.iloc[:, 0]), line_color="black"))
-#    fig.update_layout(title='SEIRD model real data',
-#                      yaxis_title='SEIRD cases',
-#                      xaxis_title='Date')
-#    return fig.show()
 
-# Plots SEIRD real
 
-#plotlyrealgo(susceptible,
-#         exposed, 
-#         infectious, 
-#         recovered4, 
-#         deaths)    
 
 # Defines derivatives
 
@@ -301,18 +282,26 @@ S, E, I, R, D = ret.T
 #      return fig.show()
 #plotseir(t, S, E, I, R)
 
-## Plots SEIRD
+def plotlyseirdgo(t, S, E, I, R, D):
+      fig = go.Figure()
+      fig.add_trace(go.Line(name="Susceptible", x=t, y=S, line_color="dark blue"))
+      fig.add_trace(go.Line(name="Exposed", x=t, y=E, line_color="gold"))
+      fig.add_trace(go.Line(name="Infectious", x=t, y=I, line_color="red"))
+      fig.add_trace(go.Line(name="Recovered", x=t, y=R, line_color="green"))
+      fig.add_trace(go.Line(name="Deaths", x=t, y=D, line_color="black"))
+      fig.update_layout(title='SEIRD model',
+                      yaxis_title='SEIRD cases',
+                      xaxis_title='Date')
+      return fig
 
-#def plotseird(t, S, E, I, R, D):
-#      fig = go.Figure()
-#      fig.add_trace(go.Line(name="Susceptible", x=t, y=S, line_color="dark blue"))
-#      fig.add_trace(go.Line(name="Exposed", x=t, y=E, line_color="gold"))
-#      fig.add_trace(go.Line(name="Infectious", x=t, y=I, line_color="red"))
-#      fig.add_trace(go.Line(name="Recovered", x=t, y=R, line_color="green"))
-#      fig.add_trace(go.Line(name="Deaths", x=t, y=D, line_color="black"))
-#      fig.update_layout(title='SEIRD model',
-#                      yaxis_title='SEIRD cases',
-#                      xaxis_title='Date')
-#      return fig.show()
-
-#plotseird(t, S, E, I, R, D)
+def plotlyrealgo(S, E, I, R, D):    
+    fig = go.Figure()
+    fig.add_trace(go.Line(name="Susceptible", x=S.index, y=S.iloc[:, 0], line_color="dark blue"))
+    fig.add_trace(go.Line(name="Exposed", x=E.index, y=E.iloc[:, 0], line_color="gold"))
+    fig.add_trace(go.Line(name="Infectious", x=I.index, y=I.iloc[:, 0], line_color="red"))
+    fig.add_trace(go.Line(name="Recovered", x=R.index, y=R.iloc[:, 0], line_color="green"))
+    fig.add_trace(go.Line(name="Deaths", x=D.index, y=D.iloc[:, 0], line_color="black"))
+    fig.update_layout(title='SEIRD model real data',
+                      yaxis_title='SEIRD cases',
+                      xaxis_title='Date')
+    return fig

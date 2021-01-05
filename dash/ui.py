@@ -144,7 +144,7 @@ def regional(_,regional_dropdown,regional_cases,regional_switches_input,start_da
             State('seird_datepicker', 'end_date')
     ])
     
-def plotlyrealgo(_, seird_dropdown,start_date,end_date):
+def plotrealgo(_, seird_dropdown,start_date,end_date):
     S, E, I, R, D = sv.susceptible, sv.exposed, sv.infectious, sv.recovered4, sv.deaths
     fig = sv.go.Figure()
     fig.add_trace(sv.go.Line(name="Susceptible", x=S.index.loc[(S.index >= start_date) & (S.index <= end_date)], y=S.iloc[:, 0], line_color="dark blue"))
@@ -171,8 +171,7 @@ def plotlyrealgo(_, seird_dropdown,start_date,end_date):
             State('seirdmo_r0_slider', 'value')
     ])
 
-def plotseird(_, date, seirdmo_initial_cases,seirdmo_population,seirdmo_icu_beds,seirdmo_p_I_to_C,seirdmo_p_C_to_D,seirdmo_r0_slider):
-    t, S, E, I, R, D = sv.t, sv.susceptible, sv.exposed, sv.infectious, sv.recovered4, sv.deaths
+def plotseirdgo(_, date, seirdmo_initial_cases,seirdmo_population,seirdmo_icu_beds,seirdmo_p_I_to_C,seirdmo_p_C_to_D,seirdmo_r0_slider):
     fig = sv.go.Figure()
     fig.add_trace(sv.go.Line(name="Susceptible", x=t, y=S, line_color="dark blue"))
     fig.add_trace(sv.go.Line(name="Exposed", x=t, y=E, line_color="gold"))

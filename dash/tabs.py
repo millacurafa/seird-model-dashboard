@@ -2,19 +2,37 @@ import dash_core_components as dcc
 import dash_html_components as html
 import dash_bootstrap_components as dbc
 from datetime import date as dt
+import server as sv
+# Defines functions
 
-#Tabs to display
+#Figs to display
+
+fig1 = sv.px.line(sv.df['Casos totales'],
+            title= "National cases",
+            labels= dict({'Casos totales':'Number of National cases','Fecha':'Date'})
+)
+fig2 = sv.px.line(sv.df_region_current,
+            title= "Regional cases",
+            labels= dict({'Casos totales':'Number of National cases','Fecha':'Date'})
+)
+fig3 =  sv.plotlyrealgo(sv.susceptible,
+        sv.exposed, 
+        sv.infectious, 
+        sv.recovered4, 
+        sv.deaths  
+)
+fig4 = sv.plotlyseirdgo(sv.t, sv.S, sv.E, sv.I, sv.R, sv.D)
+
 
 ## Main content one
-main_content_one = dbc.Col(html.Div(dcc.Graph(id='time_series_one')), 
+main_content_one = dbc.Col(html.Div(dcc.Graph(id='time_series_one',figure=fig1)), 
             width=8,
-            style = {
-                            "margin-left": "4rem",
-                            "margin-right": "2rem",
-                            "padding": "2rem 1rem",
+            style = {   "margin-left": "4rem",
+                        "margin-right": "2rem",
+                        "padding": "2rem 1rem",
             })
 ## Main content two
-main_content_two = dbc.Col(html.Div(dcc.Graph(id='time_series_two')), 
+main_content_two = dbc.Col(html.Div(dcc.Graph(id='time_series_two',figure=fig2)), 
             width=8,
             style = {
                             "margin-left": "4rem",
@@ -22,7 +40,7 @@ main_content_two = dbc.Col(html.Div(dcc.Graph(id='time_series_two')),
                             "padding": "2rem 1rem",
             })
 ## Main content three
-main_content_three = dbc.Col(html.Div(dcc.Graph(id='time_series_three')), 
+main_content_three = dbc.Col(html.Div(dcc.Graph(id='time_series_three',figure=fig3)), 
             width=8,
             style = {
                             "margin-left": "4rem",
@@ -30,7 +48,7 @@ main_content_three = dbc.Col(html.Div(dcc.Graph(id='time_series_three')),
                             "padding": "2rem 1rem",
             })  
 ## Main content four
-main_content_four = dbc.Col(html.Div(dcc.Graph(id='time_series_four')), 
+main_content_four = dbc.Col(html.Div(dcc.Graph(id='time_series_four',figure=fig4)), 
             width=8,
             style = {
                             "margin-left": "4rem",
@@ -58,7 +76,6 @@ tab_1 = dbc.Row([
                                 multi=True,
                                 value='Casos totales',
                                 id= 'national_dropdown',
-                                
                             )
                         ]),
                         dbc.FormGroup([
@@ -131,7 +148,23 @@ tab_2 = dbc.Row([
                                     {'label': 'Magallanes', 'value': 'Magallanes y la Antartica'},
                                 ],
                                 multi=True,
-                                value='Biobío',
+                                value=['Arica y Parinacota',
+                                    'Tarapaca',
+                                    'Antofagasta',
+                                    'Atacama',
+                                    'Coquimbo',
+                                    'Valparaiso',
+                                    'Metropolitana',
+                                    'Del Libertador General Bernardo O’Higgins',
+                                    'Maule',
+                                    'Nuble',
+                                    'Biobio',
+                                    'La Araucania',
+                                    'Los Rios',
+                                    'Los Lagos',
+                                    'Aysen',
+                                    'Magallanes y la Antartica'
+                                ],
                                 id='regional_dropdown'
                                 
                             )
@@ -148,7 +181,7 @@ tab_2 = dbc.Row([
                                     {'label': 'Total PCR exams', 'value': 'pcr'},
                                 ],
                                 multi=False,
-                                value='total',
+                                value='active',
                                 id='regional_cases'
                                 
                             )
@@ -214,7 +247,7 @@ tab_3 = dbc.Row([
                                     {'label': 'Dead', 'value': 'D'},
                                 ],
                                 multi=True,
-                                value='S',
+                                value=['S','E','I','R','D'],
                                 id="seird-dropdown",
                                 
                             )
