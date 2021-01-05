@@ -123,8 +123,6 @@ tab_1 = dbc.Row([
 tab_2 = dbc.Row([ 
             dbc.Col(
                 html.Div([
-                        html.P("Select variables to display", className="lead"),
-                        html.Br(),
                         dbc.FormGroup([
                             dbc.Label('Choose Regions'),
                             html.Br(),
@@ -196,7 +194,7 @@ tab_2 = dbc.Row([
                                     ],
                                     value=[],
                                     id="regional_switches_input",
-                                    switch=False,
+                                    switch=True,
                                     
                                 ),
                             ]),
@@ -233,8 +231,6 @@ tab_2 = dbc.Row([
 tab_3 = dbc.Row([ 
             dbc.Col(
                 html.Div([
-                        html.P("Select variables to display", className="lead"),
-                        html.Br(),
                         dbc.FormGroup([
                             dbc.Label('Choose data to display'),
                             html.Br(),
@@ -283,8 +279,6 @@ tab_3 = dbc.Row([
 tab_4 = dbc.Row([ 
             dbc.Col(
                 html.Div([
-                        html.P("Select variables to display", className="lead"),
-                        html.Br(),
                         dbc.FormGroup([
                             dbc.Label('Date of first infection'),
                             html.Br(),

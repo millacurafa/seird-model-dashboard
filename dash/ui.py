@@ -173,11 +173,11 @@ def plotrealgo(_, seird_dropdown,start_date,end_date):
 
 def plotseirdgo(_, date, seirdmo_initial_cases,seirdmo_population,seirdmo_icu_beds,seirdmo_p_I_to_C,seirdmo_p_C_to_D,seirdmo_r0_slider):
     fig = sv.go.Figure()
-    fig.add_trace(sv.go.Line(name="Susceptible", x=t, y=S, line_color="dark blue"))
-    fig.add_trace(sv.go.Line(name="Exposed", x=t, y=E, line_color="gold"))
-    fig.add_trace(sv.go.Line(name="Infectious", x=t, y=I, line_color="red"))
-    fig.add_trace(sv.go.Line(name="Recovered", x=t, y=R, line_color="green"))
-    fig.add_trace(sv.go.Line(name="Deaths", x=t, y=D, line_color="black"))
+    fig.add_trace(sv.go.Line(name="Susceptible", x=sv.t, y=sv.S, line_color="dark blue"))
+    fig.add_trace(sv.go.Line(name="Exposed", x=sv.t, y=sv.E, line_color="gold"))
+    fig.add_trace(sv.go.Line(name="Infectious", x=sv.t, y=sv.I, line_color="red"))
+    fig.add_trace(sv.go.Line(name="Recovered", x=sv.t, y=sv.R, line_color="green"))
+    fig.add_trace(sv.go.Line(name="Deaths", x=sv.t, y=sv.D, line_color="black"))
     fig.update_layout(title='SEIRD model',
                       yaxis_title='SEIRD cases',
                       xaxis_title='Date')
