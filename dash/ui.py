@@ -71,16 +71,15 @@ def render_content(tab):
 ])
 def update_figure(_, national_dropdown,national_switches_input, start_date, end_date):
     dff = sv.df ##Creates a copy of the dataframe
-    #[national_dropdown if national_dropdown != None else 'Casos totales']
-    dff = dff.loc[(dff.index >= start_date) & (dff.index <= end_date), ]
-    dff = dff.filter(national_dropdown, axis=1)
+    [national_dropdown if national_dropdown != None else 'Casos totales']
+    dff = dff.loc[(dff.index >= start_date) & (dff.index <= end_date), national_dropdown]
     n_switches = sv.np.sum(national_switches_input)
     fig = sv.px.line(dff).update_layout(title= "National cases",
                       yaxis_title='Number of National cases',
                       xaxis_title='Date')
     if n_switches != 0:
         if n_switches==1:
-            dff = dff/1000
+            dff = dff/(sv.N/1000)
             fig = sv.px.line(dff)
             fig.update_layout(title= "National cases",
                       yaxis_title='Number of National cases per 1000 inhabitants',
@@ -94,7 +93,7 @@ def update_figure(_, national_dropdown,national_switches_input, start_date, end_
                       xaxis_title='Date')
             return fig
         elif n_switches==3:
-            dff = sv.np.log10(dff/1000)
+            dff = sv.np.log10(dff/(sv.N/1000))
             fig = sv.px.line(dff)
             fig.update_layout(title= "National cases",
                       yaxis_title='Number of National cases per 1000 inhabitants (in log10 scale)',
@@ -105,7 +104,7 @@ def update_figure(_, national_dropdown,national_switches_input, start_date, end_
 @app.callback(
     Output('time_series_two', 'figure'),
     Input('submit_button_state_two', 'n_clicks'),
-    [##For tab_2
+    [# For tab_2
             State('regional_dropdown', 'value'),
             State('regional_cases', 'value'),
             State('regional_switches_input', 'value'),
@@ -114,41 +113,45 @@ def update_figure(_, national_dropdown,national_switches_input, start_date, end_
     ])
 
 def regional(_,regional_dropdown,regional_cases,regional_switches_input,start_date,end_date):
+    n_switches = sv.np.sum(regional_switches_input)
+    
     if (regional_cases == 'active'):
-        dff = sv.df_region_current
+        dff = sv.df_region_current_bypop
     elif regional_cases == 'total':
         dff = sv.df_region_current.cumsum()
     elif regional_cases == 'deaths':
-        dff = sv.df_deaths_current
+        dff = sv.df_deaths_current_bypop 
     elif regional_cases == 'uci':
         dff = sv.df_uci_current   
     elif regional_cases == 'pcr':
         dff = sv.df_pcr_current
+    else: 
+        dff = sv.df_region_current_bypop['bypop']
 
-    dff = dff.loc[(dff.index >= start_date) & (dff.index <= end_date),]
-    dff = dff.filter(regional_dropdown, axis=1)
-    fig = sv.px.line(dff
+    fig = sv.px.line(dff['bypop']
             ).update_layout(title= "Regional cases",
                       yaxis_title='Number of cases by region',
                       xaxis_title='Date')
-    n_switches = sv.np.sum(regional_switches_input)
+
+    dff = dff.loc[(dff.index >= start_date) & (dff.index <= end_date), regional_dropdown]
+    
     if n_switches != 0:
         if n_switches==1:
-            dff = dff/1000
+            dff = dff['bypop']
             fig = sv.px.line(dff
                         ).update_layout(title= "Regional cases",
                       yaxis_title='Number of cases by region per 1000 inhabitants',
                       xaxis_title='Date')
             return fig
         elif n_switches==2:
-            dff = sv.np.log10(dff)
+            dff = sv.np.log10(dff['bypop'])
             fig = sv.px.line(dff).update_layout(title= "Regional cases",
                       yaxis_title='Number of cases by region (in log10 scale)',
                       xaxis_title='Date')
                         
             return fig
         elif n_switches==3:
-            dff = sv.np.log10(dff/1000)
+            dff = sv.np.log10(dff['bypop'])
             fig = sv.px.line(dff
                         ).update_layout(title= "Regional cases",
                       yaxis_title='Number of cases by region per 1000 inhabitants (in log10 scale)',

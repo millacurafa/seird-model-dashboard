@@ -14,13 +14,19 @@ df_city_current = pd.read_csv("https://raw.githubusercontent.com/MinCiencia/Dato
 
 df_region_current = df_city_current[df_city_current["Comuna"] == "Total"]
 
+df_region_current_bypop = df_city_current[df_city_current["Comuna"] == "Total"]
+df_region_current_bypop['bypop'] = df_region_current["Casos actuales"]/(df_region_current["Poblacion"]/1000)
+df_region_current_bypop = df_region_current_bypop[["Region", "Fecha", "bypop", 'Casos actuales']].pivot(index='Fecha', columns='Region', values=['bypop', 'Casos actuales'])
+df_region_current_bypop
+
 df_region_current = df_region_current[["Region", "Fecha", "Casos actuales"]].pivot(index='Fecha', columns='Region', values='Casos actuales')
 
 ###Deaths
 
 df_city_deaths = pd.read_csv("https://raw.githubusercontent.com/MinCiencia/Datos-COVID19/master/output/producto38/CasosFallecidosPorComuna_std.csv")
-df_deaths_region = df_city_deaths[df_city_deaths['Comuna']=='Total'].groupby(['Region','Fecha'])[['Casos fallecidos']].sum()   
-df_deaths_current = df_deaths_region.reset_index().pivot(index='Fecha', columns='Region', values='Casos fallecidos')
+df_city_deaths['bypop']= df_city_deaths[df_city_deaths['Comuna']=='Total']['Casos fallecidos']/(df_city_deaths[df_city_deaths['Comuna']=='Total']['Poblacion']/1000)
+df_deaths_region_bypop  = df_city_deaths[df_city_deaths['Comuna']=='Total'].groupby(['Region','Fecha'])[['Casos fallecidos','bypop']].sum()    
+df_deaths_current_bypop  = df_deaths_region_bypop.reset_index().pivot(index='Fecha', columns='Region', values=['bypop', 'Casos fallecidos'])
 
 ###Number of PCR exams
 

@@ -11,7 +11,7 @@ fig1 = sv.px.line(sv.df['Casos totales']).update_layout(title= "National cases",
                     yaxis_title='Number of National cases',
                     xaxis_title='Date')
 
-fig2 = sv.px.line(sv.df_region_current
+fig2 = sv.px.line(sv.df_region_current_bypop['bypop']
     ).update_layout(title= "Regional cases",
                     yaxis_title='Number of Regional cases')
 fig3 =  sv.plotlyrealgo(sv.susceptible,
