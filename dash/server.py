@@ -15,7 +15,7 @@ df_city_current = pd.read_csv("https://raw.githubusercontent.com/MinCiencia/Dato
 df_region_current = df_city_current[df_city_current["Comuna"] == "Total"]
 
 df_region_current_bypop = df_city_current[df_city_current["Comuna"] == "Total"]
-df_region_current_bypop['bypop'] = df_region_current["Casos actuales"]/(df_region_current["Poblacion"]/1000)
+df_region_current_bypop['bypop'] = df_region_current.loc[0:,"Casos actuales"]/(df_region_current.loc[0:,"Poblacion"]/1000)
 df_region_current_bypop = df_region_current_bypop[["Region", "Fecha", "bypop", 'Casos actuales']].pivot(index='Fecha', columns='Region', values=['bypop', 'Casos actuales'])
 df_region_current_bypop
 
@@ -177,6 +177,15 @@ susceptible= pd.DataFrame()
 susceptible['Casos susceptibles totales'] = N -exposed['Casos nuevos totales']- infectious['Casos activos'] - recovered4['Casos recuperados totales']-deaths['Fallecidos']
 susceptible= pd.DataFrame(susceptible['Casos susceptibles totales'], columns=['Casos susceptibles totales'])
 
+# Concats SEIRD df
+
+df_seird = susceptible.join([exposed, infectious, recovered4, deaths])
+df_seird = df_seird.rename(columns={"Casos susceptibles totales": "Susceptible", 
+                                    "Casos nuevos totales": "Exposed",
+                                    "Casos activos":"Infectious",
+                                    "Casos recuperados totales":"Recovered",
+                                    "Fallecidos":"Dead"})
+
 
 # Defines derivatives
 
@@ -227,14 +236,37 @@ def plotlyseirdgo(t, S, E, I, R, D):
                       xaxis_title='Date')
       return fig
 
-def plotlyrealgo(S, E, I, R, D):    
-    fig = go.Figure()
-    fig.add_trace(go.Line(name="Susceptible", x=S.index, y=S.iloc[:, 0], line_color="dark blue"))
-    fig.add_trace(go.Line(name="Exposed", x=E.index, y=E.iloc[:, 0], line_color="gold"))
-    fig.add_trace(go.Line(name="Infectious", x=I.index, y=I.iloc[:, 0], line_color="red"))
-    fig.add_trace(go.Line(name="Recovered", x=R.index, y=R.iloc[:, 0], line_color="green"))
-    fig.add_trace(go.Line(name="Deaths", x=D.index, y=D.iloc[:, 0], line_color="black"))
-    fig.update_layout(title='SEIRD model real data',
-                      yaxis_title='SEIRD cases',
-                      xaxis_title='Date')
-    return fig
+# def plotlyrealgo(S, E, I, R, D):    
+#     fig = go.Figure()
+#     fig.add_trace(go.Line(name="Susceptible", x=S.index, y=S.iloc[:, 0], line_color="dark blue"))
+#     fig.add_trace(go.Line(name="Exposed", x=E.index, y=E.iloc[:, 0], line_color="gold"))
+#     fig.add_trace(go.Line(name="Infectious", x=I.index, y=I.iloc[:, 0], line_color="red"))
+#     fig.add_trace(go.Line(name="Recovered", x=R.index, y=R.iloc[:, 0], line_color="green"))
+#     fig.add_trace(go.Line(name="Deaths", x=D.index, y=D.iloc[:, 0], line_color="black"))
+#     fig.update_layout(title='SEIRD model real data',
+#                       yaxis_title='SEIRD cases',
+#                       xaxis_title='Date')
+#     return fig
+# def plotrealgo(_, seird_dropdown,start_date,end_date):
+#     S, E, I, R, D = susceptible, exposed, infectious, recovered4, deaths
+#         fig = go.Figure().update_layout(title='SEIRD model real data',
+#                         yaxis_title='SEIRD cases',
+#                         xaxis_title='Date')    
+#         for chosen in seird_dropdown:
+            
+#             if (chosen == 'S'):
+#                 fig.add_trace(go.Line(name="Susceptible", x=S.index.loc[(S.index >= start_date) & (S.index <= end_date)], y=S.iloc[:, 0], line_color="dark blue"))
+#                 return fig
+#             elif (chosen == 'E'):
+#                 fig.add_trace(go.Line(name="Exposed", x=E.index.loc[(E.index >= start_date) & (E.index <= end_date)], y=E.iloc[:, 0], line_color="gold"))
+#                 return fig
+#             elif (chosen == 'I'):
+#                 fig.add_trace(go.Line(name="Infectious", x=I.index.loc[(I.index >= start_date) & (I.index <= end_date)], y=I.iloc[:, 0], line_color="red"))
+#                 return fig
+#             elif (chosen == 'R'):
+#                 fig.add_trace(go.Line(name="Recovered", x=R.index.loc[(R.index >= start_date) & (R.index <= end_date)], y=R.iloc[:, 0], line_color="green"))
+#                 return fig
+#             elif (chosen == 'D'):
+#                 fig.add_trace(go.Line(name="Deaths", x=D.index.loc[(D.index >= start_date) & (D.index <= end_date)], y=D.iloc[:, 0], line_color="black"))
+#                 return fig
+#             else: return fig

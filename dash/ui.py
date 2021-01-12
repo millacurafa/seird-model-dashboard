@@ -167,36 +167,15 @@ def regional(_,regional_dropdown,regional_cases,regional_switches_input,start_da
             State('seird_datepicker', 'end_date')
     ])
     
-def plotrealgo(_, seird_dropdown,start_date,end_date):
-    S, E, I, R, D = sv.susceptible, sv.exposed, sv.infectious, sv.recovered4, sv.deaths
-    fig = sv.go.Figure().update_layout(title='SEIRD model real data',
+def plotrealseird(_, seird_dropdown,start_date,end_date):
+    dff = sv.df_seird
+    [seird_dropdown if seird_dropdown != None else ['Susceptible','Exposed','Infectious','Recovered','Deaths']]
+    dff = dff.loc[(dff.index >= start_date) & (dff.index <= end_date),seird_dropdown]
+    fig = sv.px.line(dff
+            ).update_layout(title='SEIRD model real data',
                       yaxis_title='SEIRD cases',
-                      xaxis_title='Date')    
-    for chosen in seird_dropdown:
-        
-        if (chosen == 'S'):
-            fig.add_trace(sv.go.Line(name="Susceptible", x=S.index.loc[(S.index >= start_date) & (S.index <= end_date)], y=S.iloc[:, 0], line_color="dark blue"))
-            return fig
-        elif (chosen == 'E'):
-            fig.add_trace(sv.go.Line(name="Exposed", x=E.index.loc[(E.index >= start_date) & (E.index <= end_date)], y=E.iloc[:, 0], line_color="gold"))
-            return fig
-        elif (chosen == 'I'):
-            fig.add_trace(sv.go.Line(name="Infectious", x=I.index.loc[(I.index >= start_date) & (I.index <= end_date)], y=I.iloc[:, 0], line_color="red"))
-            return fig
-        elif (chosen == 'R'):
-            fig.add_trace(sv.go.Line(name="Recovered", x=R.index.loc[(R.index >= start_date) & (R.index <= end_date)], y=R.iloc[:, 0], line_color="green"))
-            return fig
-        elif (chosen == 'D'):
-            fig.add_trace(sv.go.Line(name="Deaths", x=D.index.loc[(D.index >= start_date) & (D.index <= end_date)], y=D.iloc[:, 0], line_color="black"))
-            return fig
-        else: return fig
-                 
-
-    
-
-
-
-
+                      xaxis_title='Date')
+    return fig
 
 @app.callback(
     Output('time_series_four', 'figure'),

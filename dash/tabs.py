@@ -13,13 +13,13 @@ fig1 = sv.px.line(sv.df['Casos totales']).update_layout(title= "National cases",
 
 fig2 = sv.px.line(sv.df_region_current_bypop['bypop']
     ).update_layout(title= "Regional cases",
-                    yaxis_title='Number of Regional cases')
-fig3 =  sv.plotlyrealgo(sv.susceptible,
-        sv.exposed, 
-        sv.infectious, 
-        sv.recovered4, 
-        sv.deaths  
-)
+                    yaxis_title='Number of Regional cases',
+                    xaxis_title='Date')
+fig3 = sv.px.line(sv.df_seird
+    ).update_layout(title='SEIRD model real data',
+                    yaxis_title='SEIRD cases',
+                    xaxis_title='Date')
+
 fig4 = sv.plotlyseirdgo(sv.t, sv.S, sv.E, sv.I, sv.R, sv.D)
 
 
@@ -253,15 +253,15 @@ tab_3 = dbc.Row([
                             html.Br(),
                             dcc.Dropdown(
                                 options=[
-                                    {'label': 'Susceptible', 'value': 'S'},
-                                    {'label': 'Exposed', 'value': 'E'},
-                                    {'label': 'Infectious', 'value': 'I'},
-                                    {'label': 'Recovered', 'value': 'R'},
-                                    {'label': 'Dead', 'value': 'D'},
+                                    {'label': 'Susceptible', 'value': 'Susceptible'},
+                                    {'label': 'Exposed', 'value': 'Exposed'},
+                                    {'label': 'Infectious', 'value': 'Infectious'},
+                                    {'label': 'Recovered', 'value': 'Recovered'},
+                                    {'label': 'Dead', 'value': 'Dead'},
                                 ],
                                 multi=True,
-                                value=['S','E','I','R','D'],
-                                id="seird-dropdown",
+                                value=['Susceptible','Exposed','Infectious','Recovered','Dead'],
+                                id="seird_dropdown",
                                 
                             )
                         ]),  
@@ -269,7 +269,7 @@ tab_3 = dbc.Row([
                             dbc.Label('Choose a date'),
                             html.Br(),
                             dcc.DatePickerRange(
-                                start_date=dt(2020, 1, 1),
+                                start_date=dt(2020, 3, 2),
                                 end_date=dt.today(),
                                 display_format="YYYY-MM-DD",
                                 end_date_placeholder_text='Select a date!',
