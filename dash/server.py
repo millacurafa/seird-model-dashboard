@@ -24,6 +24,9 @@ df_region_current = df_region_current[["Region", "Fecha", "Casos actuales"]].piv
 ###Deaths
 
 df_city_deaths = pd.read_csv("https://raw.githubusercontent.com/MinCiencia/Datos-COVID19/master/output/producto38/CasosFallecidosPorComuna_std.csv")
+df_deaths_region = df_city_deaths[df_city_deaths['Comuna']=='Total'].groupby(['Region','Fecha'])[['Casos fallecidos']].sum()   
+df_deaths_current = df_deaths_region.reset_index().pivot(index='Fecha', columns='Region', values='Casos fallecidos')
+
 df_city_deaths['bypop']= df_city_deaths[df_city_deaths['Comuna']=='Total']['Casos fallecidos']/(df_city_deaths[df_city_deaths['Comuna']=='Total']['Poblacion']/1000)
 df_deaths_region_bypop  = df_city_deaths[df_city_deaths['Comuna']=='Total'].groupby(['Region','Fecha'])[['Casos fallecidos','bypop']].sum()    
 df_deaths_current_bypop  = df_deaths_region_bypop.reset_index().pivot(index='Fecha', columns='Region', values=['bypop', 'Casos fallecidos'])
@@ -126,31 +129,11 @@ N = 18300000 #Chilean population; Source: World Bank
 ## Infectious cases
 infectious = df[['Casos activos']].fillna(np.mean([13490,9990])) # Chilean active cases
 
-#px.line(infectious,
-#        title= "Infectious people",
-#        labels= {'Fecha':'Date'},
-#        ).update_layout(
-#                    yaxis_title='Number of infectious cases')
-
-## Recovered Cases 1
 recovered1 = df['Casos recuperados'].dropna()
 
-#px.line(recovered1,
-#        title="Recovered cases"
-#       ).update_layout(
-#                        yaxis_title='Number of recovered cases',
-#                        xaxis_title='Date'
-#                       )
 # Recovered Cases 2
 recovered2 = df['Casos confirmados recuperados'].dropna()
-#df['Casos recuperados'] # Chilean recovered cases
 
-#px.line(recovered2,
-#        title="Recovered cases"
-#       ).update_layout(
-#                        yaxis_title='Number of recovered cases',
-#                        xaxis_title='Date'
-#                       )
 #Looking for recovered data from 1st to 20th June
 recovered3 = df.filter(like = '2020-06-', axis=0)['Casos recuperados por FD']
 
@@ -166,12 +149,6 @@ recovered3 = recovered3.drop(['2020-06-01',
                              '2020-06-29',
                              '2020-06-30'])
 
-#px.line(recovered3,
-#        title="Recovered cases"
-#       ).update_layout(
-#                        yaxis_title='Number of recovered cases',
-#                        xaxis_title='Date'
-#                       )
 ## Total Recovered cases
 
 recovered4 = pd.DataFrame(pd.concat([recovered1,recovered3,recovered2]
@@ -182,23 +159,10 @@ recovered4 = pd.DataFrame(pd.concat([recovered1,recovered3,recovered2]
 #adding recovered variable into national 
 
 df['recovered'] = recovered4['Casos recuperados totales']
-
-#px.line(recovered4,
-#        title="Total number of recovered cases"
-#       ).update_layout(
-#                        yaxis_title='Number of recovered cases',
-#                        xaxis_title='Date'
-#                       ) 
+ 
 
 ## Death cases
 deaths = df[['Fallecidos']].fillna(0) #death cases
-
-#px.line(deaths,
-#        title="Total number of deaths"
-#       ).update_layout(
-#                        yaxis_title='Number of deaths',
-#                        xaxis_title='Date'
-#                       )  
 
 # Exposed cases
 
@@ -207,26 +171,11 @@ exposed = df[['Casos nuevos totales']].dropna()
 #For MA7
 ## exposed.rolling(7).mean()
 
-#px.line(exposed,
-#        title="Total number of exposed people"
-#       ).update_layout(
-#                        yaxis_title='Number of exposed people',
-#                        xaxis_title='Date'
-#                       )
 
 # Susceptible cases
 susceptible= pd.DataFrame()
 susceptible['Casos susceptibles totales'] = N -exposed['Casos nuevos totales']- infectious['Casos activos'] - recovered4['Casos recuperados totales']-deaths['Fallecidos']
 susceptible= pd.DataFrame(susceptible['Casos susceptibles totales'], columns=['Casos susceptibles totales'])
-#px.line(susceptible,
-#        title="Total number of susceptible people"
-#       ).update_layout(
-#                        yaxis_title='Number of susceptible people',
-#                        xaxis_title='Date'
-#                       )           
-
-
-
 
 
 # Defines derivatives
@@ -265,36 +214,6 @@ y0 = S0, E0, I0, R0, D0 # Initial conditions vector
 ret = odeint(derivate, y0, t, args=(N, beta, gamma, delta, alpha, rho))
 S, E, I, R, D = ret.T
 
-## Plots SIR model
-
-#def plotsir(t, S, I, R):
-#      fig = go.Figure()
-#      fig.add_trace(go.Line(name="Susceptible", x=t, y=S, line_color="dark blue"))
-#      fig.add_trace(go.Line(name="Exposed", x=t, y=E, line_color="gold"))
-#      fig.add_trace(go.Line(name="Infectious", x=t, y=I, line_color="red"))
-#      fig.add_trace(go.Line(name="Recovered", x=t, y=R, line_color="green"))
-#      fig.add_trace(go.Line(name="Deaths", x=t, y=D, line_color="black"))
-#      fig.update_layout(title='SIR model',
-#                      yaxis_title='SIR cases',
-#                      xaxis_title='Date')
-#      return fig.show()
-
-#plotsir(t, S, I, R)
-
-##Plots SEIR
-
-#def plotseir(t, S, E, I, R):
-#      fig = go.Figure()
-#      fig.add_trace(go.Line(name="Susceptible", x=t, y=S, line_color="dark blue"))
-#      fig.add_trace(go.Line(name="Exposed", x=t, y=E, line_color="gold"))
-#      fig.add_trace(go.Line(name="Infectious", x=t, y=I, line_color="red"))
-#      fig.add_trace(go.Line(name="Recovered", x=t, y=R, line_color="green"))
-#      fig.add_trace(go.Line(name="Deaths", x=t, y=D, line_color="black"))
-#      fig.update_layout(title='SEIR model',
-#                      yaxis_title='SEIR cases',
-#                      xaxis_title='Date')
-#      return fig.show()
-#plotseir(t, S, E, I, R)
 
 def plotlyseirdgo(t, S, E, I, R, D):
       fig = go.Figure()
