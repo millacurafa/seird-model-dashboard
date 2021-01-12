@@ -75,37 +75,32 @@ def update_figure(_, national_dropdown,national_switches_input, start_date, end_
     dff = dff.loc[(dff.index >= start_date) & (dff.index <= end_date), ]
     dff = dff.filter(national_dropdown, axis=1)
     n_switches = sv.np.sum(national_switches_input)
-    fig = sv.px.line(dff,
-                        title= "National cases",
-                        labels= dict({'Casos totales':'Number of National cases',
-                                    'Fecha':'Date'})
-                        )
+    fig = sv.px.line(dff).update_layout(title= "National cases",
+                      yaxis_title='Number of National cases',
+                      xaxis_title='Date')
     if n_switches != 0:
         if n_switches==1:
             dff = dff/1000
-            fig = sv.px.line(dff,
-                        title= "National cases",
-                        labels= dict({'Casos totales':'Number of National cases',
-                                    'Fecha':'Date'})
-                        )
+            fig = sv.px.line(dff)
+            fig.update_layout(title= "National cases",
+                      yaxis_title='Number of National cases per 1000 inhabitants',
+                      xaxis_title='Date')
             return fig
         elif n_switches==2:
             dff = sv.np.log10(dff)
-            fig = sv.px.line(dff,
-                        title= "National cases",
-                        labels= dict({'Casos totales':'Number of National cases',
-                                    'Fecha':'Date'})
-                        )
+            fig = sv.px.line(dff)
+            fig.update_layout(title= "National cases",
+                      yaxis_title='Number of National cases (in log10 scale)',
+                      xaxis_title='Date')
             return fig
         elif n_switches==3:
             dff = sv.np.log10(dff/1000)
-            fig = sv.px.line(dff,
-                        title= "National cases",
-                        labels= dict({'Casos totales':'Number of National cases',
-                                    'Fecha':'Date'})
-                        )
+            fig = sv.px.line(dff)
+            fig.update_layout(title= "National cases",
+                      yaxis_title='Number of National cases per 1000 inhabitants (in log10 scale)',
+                      xaxis_title='Date')
             return fig
-    else: return fig
+    else: return fig 
 
 @app.callback(
     Output('time_series_two', 'figure'),
@@ -229,5 +224,8 @@ def plotseirdgo(_, date, seirdmo_initial_cases,seirdmo_population,seirdmo_icu_be
 server = app.server
 app.config.suppress_callback_exceptions = True
 
+
+
 if __name__ == '__main__':
     app.run_server(debug=True)
+

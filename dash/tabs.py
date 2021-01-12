@@ -7,10 +7,11 @@ import server as sv
 
 #Figs to display
 
-fig1 = sv.px.line(sv.df['Casos totales'],
-            title= "National cases",
-            labels= dict({'Casos totales':'Number of National cases','Fecha':'Date'})
-)
+fig1 = sv.px.line(sv.df['Casos totales'])
+fig1.update_layout(title= "National cases",
+                    yaxis_title='Number of National cases',
+                    xaxis_title='Date')
+
 fig2 = sv.px.line(sv.df_region_current,
             title= "Regional cases",
             labels= dict({'Casos totales':'Number of National cases','Fecha':'Date'})
@@ -41,7 +42,7 @@ main_content_one = dbc.Col([
                                     switch=True,
                                 ),
                             ]),style = {'display': 'inline-block'}),
-    dbc.Row(dcc.Graph(id='time_series_one',figure=fig1))],
+    dbc.Row(dbc.Col(dcc.Graph(id='time_series_one',figure=fig1),width=12))],
     width=8,
     style = {   "margin-left": "4rem",
                         "margin-right": "2rem",
@@ -65,7 +66,7 @@ main_content_two = dbc.Col([
                                     
                                 ),
                             ], row=True)),
-        dbc.Row(dcc.Graph(id='time_series_two',figure=fig2))],
+        dbc.Row(dbc.Col(dcc.Graph(id='time_series_two',figure=fig2),width=12))],
     width=8,
     style = {
              "margin-left": "4rem",
@@ -103,7 +104,7 @@ tab_1 = dbc.Row([
                                     {'label': 'Total cases', 'value': 'Casos totales'},
                                     {'label': 'Active cases', 'value': 'Casos activos'},
                                     {'label': 'Deaths', 'value': 'Fallecidos'},
-                                    {'label': 'Recovered', 'value': 'Casos recuperados'},
+                                    {'label': 'Recovered', 'value': 'recovered'},
                                  #   {'label': 'Total PCR exams', 'value': 'pcr'},
                                 ],
                                 multi=True,
@@ -117,7 +118,7 @@ tab_1 = dbc.Row([
                             dcc.DatePickerRange(
                                 id='national_datepicker',
                                 start_date=dt(2020, 1, 1),
-                                end_date=dt(2020, 12, 31),
+                                end_date=dt.today(),
                                 display_format="YYYY-MM-DD",
                                 end_date_placeholder_text='Select a date!',
                                 day_size = 30
@@ -209,7 +210,7 @@ tab_2 = dbc.Row([
                             html.Br(),
                             dcc.DatePickerRange(
                                 start_date=dt(2020, 1, 1),
-                                end_date=dt(2020, 12, 31),
+                                end_date=dt.today(),
                                 display_format="YYYY-MM-DD",
                                 end_date_placeholder_text='Select a date!',
                                 id='regional_datepicker',
@@ -260,7 +261,7 @@ tab_3 = dbc.Row([
                             html.Br(),
                             dcc.DatePickerRange(
                                 start_date=dt(2020, 1, 1),
-                                end_date=dt(2020, 12, 31),
+                                end_date=dt.today(),
                                 display_format="YYYY-MM-DD",
                                 end_date_placeholder_text='Select a date!',
                                 id='seird_datepicker',

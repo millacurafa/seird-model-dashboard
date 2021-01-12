@@ -42,6 +42,8 @@ df = pd.read_csv('https://raw.githubusercontent.com/MinCiencia/Datos-COVID19/mas
 
 df= df.set_index('Fecha')
 
+
+
 #Checking for data correlations
 
 #correlations = df[['Casos totales',
@@ -169,6 +171,12 @@ recovered3 = recovered3.drop(['2020-06-01',
 recovered4 = pd.DataFrame(pd.concat([recovered1,recovered3,recovered2]
                                     ),
                          columns=['Casos recuperados totales'])
+
+
+#adding recovered variable into national 
+
+df['recovered'] = recovered4['Casos recuperados totales']
+
 #px.line(recovered4,
 #        title="Total number of recovered cases"
 #       ).update_layout(
