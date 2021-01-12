@@ -127,35 +127,32 @@ def regional(_,regional_dropdown,regional_cases,regional_switches_input,start_da
 
     dff = dff.loc[(dff.index >= start_date) & (dff.index <= end_date),]
     dff = dff.filter(regional_dropdown, axis=1)
-    fig = sv.px.line(dff,
-            title= "Regional cases",
-            labels= dict({'Casos actuales':'Number of cases by region',
-                        'Fecha':'Date'})
-            )
-    if regional_switches_input != 0:
-        if regional_switches_input==1:
+    fig = sv.px.line(dff
+            ).update_layout(title= "Regional cases",
+                      yaxis_title='Number of cases by region',
+                      xaxis_title='Date')
+    n_switches = sv.np.sum(regional_switches_input)
+    if n_switches != 0:
+        if n_switches==1:
             dff = dff/1000
-            fig = sv.px.line(dff,
-                        title= "Regional cases",
-                        labels= dict({'Casos actuales':'Number of cases by region',
-                        'Fecha':'Date'})
-                        )
+            fig = sv.px.line(dff
+                        ).update_layout(title= "Regional cases",
+                      yaxis_title='Number of cases by region per 1000 inhabitants',
+                      xaxis_title='Date')
             return fig
-        elif regional_switches_input==2:
+        elif n_switches==2:
             dff = sv.np.log10(dff)
-            fig = sv.px.line(dff,
-                        title= "Regional cases",
-                        labels= dict({'Casos actuales':'Number of cases by region',
-                        'Fecha':'Date'})
-                        )
+            fig = sv.px.line(dff).update_layout(title= "Regional cases",
+                      yaxis_title='Number of cases by region (in log10 scale)',
+                      xaxis_title='Date')
+                        
             return fig
-        elif regional_switches_input==3:
+        elif n_switches==3:
             dff = sv.np.log10(dff/1000)
-            fig = sv.px.line(dff,
-                        title= "Regional cases",
-                        labels= dict({'Casos actuales':'Number of cases by region',
-                        'Fecha':'Date'})
-                        )
+            fig = sv.px.line(dff
+                        ).update_layout(title= "Regional cases",
+                      yaxis_title='Number of cases by region per 1000 inhabitants (in log10 scale)',
+                      xaxis_title='Date')
             return fig
     else: return fig
 

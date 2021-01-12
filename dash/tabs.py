@@ -27,8 +27,9 @@ fig4 = sv.plotlyseirdgo(sv.t, sv.S, sv.E, sv.I, sv.R, sv.D)
 
 # Main content one
 main_content_one = dbc.Col([
-    dbc.Row(
-        dbc.FormGroup([
+    dbc.Row([
+        dbc.Col(
+            dbc.FormGroup([
                                 dbc.Label("Additional setup"),
                                 html.Br(),
                                 dbc.Checklist(
@@ -42,30 +43,82 @@ main_content_one = dbc.Col([
                                     switch=True,
                                 ),
                             ]),style = {'display': 'inline-block'}),
+    ]),
     dbc.Row(dbc.Col(dcc.Graph(id='time_series_one',figure=fig1),width=12))],
     width=8,
     style = {   "margin-left": "4rem",
-                        "margin-right": "2rem",
-                        "padding": "2rem 1rem"})
+                "margin-right": "2rem",
+                "padding": "2rem 1rem"})
 # Main content two
 main_content_two = dbc.Col([  
-    dbc.Row(   
+    dbc.Row([ 
+        dbc.Col(
         dbc.FormGroup(
             [
-                                dbc.Label("Additional setup"),
-                                dbc.Checklist(
+                dbc.Label("Additional setup"),
+                dbc.Checklist(
                                     options=[
                                         {"label": "per 1000 inhabitants", "value": 1},
                                         {"label": "logarithmic scale", "value": 2},
                                         {"label": "moving average", "value": 3, "disabled": True},
                                     ],
                                     value=[],
-                                    labelStyle={'display': 'inline-block'},
+                                #    labelStyle={'display': 'inline-block'},
                                     id="regional_switches_input",
                                     switch=True,
                                     
                                 ),
-                            ], row=True)),
+                            ],style = {'display': 'inline-block'})
+        ),
+        dbc.Col(
+            
+                        dbc.FormGroup([
+                            dbc.Label('Choose Regions'),
+                            html.Br(),
+                            dcc.Dropdown(
+                                options=[
+                                    {'label': 'Arica y Parinacota', 'value': 'Arica y Parinacota'},
+                                    {'label': 'Tarapacá', 'value': 'Tarapaca'},
+                                    {'label': 'Antofagasta', 'value': 'Antofagasta'},
+                                    {'label': 'Atacama', 'value': 'Atacama'},
+                                    {'label': 'Coquimbo', 'value': 'Coquimbo'},
+                                    {'label': 'Valparaíso', 'value': 'Valparaiso'},
+                                    {'label': 'Metropolitana', 'value': 'Metropolitana'},
+                                    {'label': 'O’Higgins', 'value': 'Del Libertador General Bernardo O’Higgins'},
+                                    {'label': 'Maule', 'value': 'Maule'},
+                                    {'label': 'Ñuble', 'value': 'Nuble'},
+                                    {'label': 'Biobío', 'value': 'Biobio'},
+                                    {'label': 'Araucanía', 'value': 'La Araucania'},
+                                    {'label': 'Los Ríos', 'value': 'Los Rios'},
+                                    {'label': 'Los Lagos', 'value': 'Los Lagos'},
+                                    {'label': 'Aysén', 'value': 'Aysen'},
+                                    {'label': 'Magallanes', 'value': 'Magallanes y la Antartica'},
+                                ],
+                                multi=True,
+                                value=['Arica y Parinacota',
+                                    'Tarapaca',
+                                    'Antofagasta',
+                                    'Atacama',
+                                    'Coquimbo',
+                                    'Valparaiso',
+                                    'Metropolitana',
+                                    'Del Libertador General Bernardo O’Higgins',
+                                    'Maule',
+                                    'Nuble',
+                                    'Biobio',
+                                    'La Araucania',
+                                    'Los Rios',
+                                    'Los Lagos',
+                                    'Aysen',
+                                    'Magallanes y la Antartica'
+                                ],
+                                id='regional_dropdown'
+                                
+                            )
+                        ]), width=8  
+        )
+                            
+    ]),
         dbc.Row(dbc.Col(dcc.Graph(id='time_series_two',figure=fig2),width=12))],
     width=8,
     style = {
@@ -144,50 +197,19 @@ tab_1 = dbc.Row([
 tab_2 = dbc.Row([ 
             dbc.Col(
                 html.Div([
+
                         dbc.FormGroup([
-                            dbc.Label('Choose Regions'),
+                            dbc.Label('Choose a date'),
                             html.Br(),
-                            dcc.Dropdown(
-                                options=[
-                                    {'label': 'Arica y Parinacota', 'value': 'Arica y Parinacota'},
-                                    {'label': 'Tarapacá', 'value': 'Tarapaca'},
-                                    {'label': 'Antofagasta', 'value': 'Antofagasta'},
-                                    {'label': 'Atacama', 'value': 'Atacama'},
-                                    {'label': 'Coquimbo', 'value': 'Coquimbo'},
-                                    {'label': 'Valparaíso', 'value': 'Valparaiso'},
-                                    {'label': 'Metropolitana', 'value': 'Metropolitana'},
-                                    {'label': 'O’Higgins', 'value': 'Del Libertador General Bernardo O’Higgins'},
-                                    {'label': 'Maule', 'value': 'Maule'},
-                                    {'label': 'Ñuble', 'value': 'Nuble'},
-                                    {'label': 'Biobío', 'value': 'Biobio'},
-                                    {'label': 'Araucanía', 'value': 'La Araucania'},
-                                    {'label': 'Los Ríos', 'value': 'Los Rios'},
-                                    {'label': 'Los Lagos', 'value': 'Los Lagos'},
-                                    {'label': 'Aysén', 'value': 'Aysen'},
-                                    {'label': 'Magallanes', 'value': 'Magallanes y la Antartica'},
-                                ],
-                                multi=True,
-                                value=['Arica y Parinacota',
-                                    'Tarapaca',
-                                    'Antofagasta',
-                                    'Atacama',
-                                    'Coquimbo',
-                                    'Valparaiso',
-                                    'Metropolitana',
-                                    'Del Libertador General Bernardo O’Higgins',
-                                    'Maule',
-                                    'Nuble',
-                                    'Biobio',
-                                    'La Araucania',
-                                    'Los Rios',
-                                    'Los Lagos',
-                                    'Aysen',
-                                    'Magallanes y la Antartica'
-                                ],
-                                id='regional_dropdown'
-                                
+                            dcc.DatePickerRange(
+                                start_date=dt(2020, 1, 1),
+                                end_date=dt.today(),
+                                display_format="YYYY-MM-DD",
+                                end_date_placeholder_text='Select a date!',
+                                id='regional_datepicker',
+                                day_size = 30
                             )
-                        ]),  
+                        ]),
                         dbc.FormGroup([
                             dbc.Label('Choose data to display'),
                             html.Br(),
@@ -205,18 +227,7 @@ tab_2 = dbc.Row([
                                 
                             )
                         ]), 
-                        dbc.FormGroup([
-                            dbc.Label('Choose a date'),
-                            html.Br(),
-                            dcc.DatePickerRange(
-                                start_date=dt(2020, 1, 1),
-                                end_date=dt.today(),
-                                display_format="YYYY-MM-DD",
-                                end_date_placeholder_text='Select a date!',
-                                id='regional_datepicker',
-                                day_size = 30
-                            )
-                        ]),
+                        
                         dbc.Button("Apply", id="submit_button_state_two",
                                 color="primary", block=True)
                     ]),
