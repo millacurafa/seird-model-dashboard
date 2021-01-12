@@ -169,8 +169,10 @@ def regional(_,regional_dropdown,regional_cases,regional_switches_input,start_da
     
 def plotrealgo(_, seird_dropdown,start_date,end_date):
     S, E, I, R, D = sv.susceptible, sv.exposed, sv.infectious, sv.recovered4, sv.deaths
-    fig = sv.go.Figure()
     for chosen in seird_dropdown:
+        fig = sv.go.Figure().update_layout(title='SEIRD model real data',
+                      yaxis_title='SEIRD cases',
+                      xaxis_title='Date')    
         if (chosen == 'S'):
             fig.add_trace(sv.go.Line(name="Susceptible", x=S.index.loc[(S.index >= start_date) & (S.index <= end_date)], y=S.iloc[:, 0], line_color="dark blue"))
         elif (chosen == 'E'):
@@ -182,9 +184,7 @@ def plotrealgo(_, seird_dropdown,start_date,end_date):
         elif (chosen == 'D'):
             fig.add_trace(sv.go.Line(name="Deaths", x=D.index.loc[(D.index >= start_date) & (D.index <= end_date)], y=D.iloc[:, 0], line_color="black"))
         else: return fig
-    fig.update_layout(title='SEIRD model real data',
-                      yaxis_title='SEIRD cases',
-                      xaxis_title='Date')                 
+                 
     return fig
     
 

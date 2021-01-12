@@ -7,15 +7,13 @@ import server as sv
 
 #Figs to display
 
-fig1 = sv.px.line(sv.df['Casos totales'])
-fig1.update_layout(title= "National cases",
+fig1 = sv.px.line(sv.df['Casos totales']).update_layout(title= "National cases",
                     yaxis_title='Number of National cases',
                     xaxis_title='Date')
 
-fig2 = sv.px.line(sv.df_region_current,
-            title= "Regional cases",
-            labels= dict({'Casos totales':'Number of National cases','Fecha':'Date'})
-)
+fig2 = sv.px.line(sv.df_region_current
+    ).update_layout(title= "Regional cases",
+                    yaxis_title='Number of Regional cases')
 fig3 =  sv.plotlyrealgo(sv.susceptible,
         sv.exposed, 
         sv.infectious, 
@@ -44,7 +42,7 @@ main_content_one = dbc.Col([
                                 ),
                             ]),style = {'display': 'inline-block'}),
     ]),
-    dbc.Row(dbc.Col(dcc.Graph(id='time_series_one',figure=fig1),width=12))],
+    dbc.Row(dbc.Col(dcc.Graph(id='time_series_one', figure=fig1),width=12))],
     width=8,
     style = {   "margin-left": "4rem",
                 "margin-right": "2rem",
