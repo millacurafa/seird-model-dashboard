@@ -24,20 +24,53 @@ fig3 =  sv.plotlyrealgo(sv.susceptible,
 fig4 = sv.plotlyseirdgo(sv.t, sv.S, sv.E, sv.I, sv.R, sv.D)
 
 
-## Main content one
-main_content_one = dbc.Col(html.Div(dcc.Graph(id='time_series_one',figure=fig1)), 
-            width=8,
-            style = {   "margin-left": "4rem",
+# Main content one
+main_content_one = dbc.Col([
+    dbc.Row(
+        dbc.FormGroup([
+                                dbc.Label("Additional setup"),
+                                html.Br(),
+                                dbc.Checklist(
+                                    options=[
+                                        {"label": "per 1000 inhabitants", "value": 1},
+                                        {"label": "logarithmic scale", "value": 2},
+                                        {"label": "moving average", "value": 4, "disabled": True},
+                                    ],
+                                    value=[],
+                                    id="national_switches_input",
+                                    switch=True,
+                                ),
+                            ]),style = {'display': 'inline-block'}),
+    dbc.Row(dcc.Graph(id='time_series_one',figure=fig1))],
+    width=8,
+    style = {   "margin-left": "4rem",
                         "margin-right": "2rem",
-                        "padding": "2rem 1rem",
-            })
-## Main content two
-main_content_two = dbc.Col(html.Div(dcc.Graph(id='time_series_two',figure=fig2)), 
-            width=8,
-            style = {
-                            "margin-left": "4rem",
-                            "margin-right": "2rem",
-                            "padding": "2rem 1rem",
+                        "padding": "2rem 1rem"})
+# Main content two
+main_content_two = dbc.Col([  
+    dbc.Row(   
+        dbc.FormGroup(
+            [
+                                dbc.Label("Additional setup"),
+                                dbc.Checklist(
+                                    options=[
+                                        {"label": "per 1000 inhabitants", "value": 1},
+                                        {"label": "logarithmic scale", "value": 2},
+                                        {"label": "moving average", "value": 3, "disabled": True},
+                                    ],
+                                    value=[],
+                                    labelStyle={'display': 'inline-block'},
+                                    id="regional_switches_input",
+                                    switch=True,
+                                    
+                                ),
+                            ], row=True)),
+        dbc.Row(dcc.Graph(id='time_series_two',figure=fig2))],
+    width=8,
+    style = {
+             "margin-left": "4rem",
+            "margin-right": "2rem",
+            "padding": "2rem 1rem",
             })
 ## Main content three
 main_content_three = dbc.Col(html.Div(dcc.Graph(id='time_series_three',figure=fig3)), 
@@ -77,21 +110,7 @@ tab_1 = dbc.Row([
                                 value='Casos totales',
                                 id= 'national_dropdown',
                             )
-                        ]),
-                        dbc.FormGroup([
-                                dbc.Label("Additional setup"),
-                                html.Br(),
-                                dbc.Checklist(
-                                    options=[
-                                        {"label": "per 1000 inhabitants", "value": 1},
-                                        {"label": "logarithmic scale", "value": 2},
-                                        {"label": "moving average", "value": 4, "disabled": True},
-                                    ],
-                                    value=[],
-                                    id="national_switches_input",
-                                    switch=True,
-                                ),
-                            ]),  
+                        ]),  
                         dbc.FormGroup([
                             dbc.Label('Choose a date'),
                             html.Br(),
@@ -100,7 +119,8 @@ tab_1 = dbc.Row([
                                 start_date=dt(2020, 1, 1),
                                 end_date=dt(2020, 12, 31),
                                 display_format="YYYY-MM-DD",
-                                end_date_placeholder_text='Select a date!'
+                                end_date_placeholder_text='Select a date!',
+                                day_size = 30
                             )
                         ]),
                         dbc.Button("Apply", id="submit_button_state_one",
@@ -183,21 +203,7 @@ tab_2 = dbc.Row([
                                 id='regional_cases'
                                 
                             )
-                        ]),  
-                        dbc.FormGroup([
-                                dbc.Label("Additional setup"),
-                                dbc.Checklist(
-                                    options=[
-                                        {"label": "per 1000 inhabitants", "value": 1},
-                                        {"label": "logarithmic scale", "value": 2},
-                                        {"label": "moving average", "value": 3, "disabled": True},
-                                    ],
-                                    value=[],
-                                    id="regional_switches_input",
-                                    switch=True,
-                                    
-                                ),
-                            ]),
+                        ]), 
                         dbc.FormGroup([
                             dbc.Label('Choose a date'),
                             html.Br(),
@@ -206,7 +212,8 @@ tab_2 = dbc.Row([
                                 end_date=dt(2020, 12, 31),
                                 display_format="YYYY-MM-DD",
                                 end_date_placeholder_text='Select a date!',
-                                id='regional_datepicker'
+                                id='regional_datepicker',
+                                day_size = 30
                             )
                         ]),
                         dbc.Button("Apply", id="submit_button_state_two",
@@ -256,7 +263,8 @@ tab_3 = dbc.Row([
                                 end_date=dt(2020, 12, 31),
                                 display_format="YYYY-MM-DD",
                                 end_date_placeholder_text='Select a date!',
-                                id='seird_datepicker'
+                                id='seird_datepicker',
+                                day_size = 30
                             )
                         ]),
                         dbc.Button("Apply", id="submit_button_state_three",
@@ -283,7 +291,7 @@ tab_4 = dbc.Row([
                             dbc.Label('Date of first infection'),
                             html.Br(),
                             dcc.DatePickerSingle(
-                                    day_size=39,  # how big the date picker appears
+                                    day_size=30,  # how big the date picker appears
                                     display_format="YYYY-MM-DD",
                                     date='2020-01-01',
                                     min_date_allowed=dt(2020, 1, 1),

@@ -1,10 +1,13 @@
 import dash
 from dash.dependencies import Input, Output, State
-from tabs import *
-#imports backend
+import dash_core_components as dcc
+import dash_html_components as html
+import dash_bootstrap_components as dbc
+import tabs as tb
+# imports backend
 import server as sv
 
-## Uses bootstrap stylesheet
+# Uses bootstrap stylesheet
 external_stylesheets = [dbc.themes.BOOTSTRAP]
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
@@ -13,7 +16,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div([
     html.Div([html.Img(src='/static/images/databio_logo.svg',
-        style={'display':'inline','width': '50%', 'max-width': '8rem'}),
+        style = {'display': 'inline', 'width': '50%', 'max-width': '8rem'}),
         html.H1("Covid19 Analysis 🇨🇱", style={'text-align': 'center', 'color':'white'}), 
         html.P(['made with ❤ by ', html.A('millacurafa', href='https://github.com/millacurafa', style={'color':'white'})],
         style={'text-align': 'center', 'color':'white'}),
@@ -36,23 +39,23 @@ app.layout = html.Div([
 def render_content(tab):
     if tab == 'tab-1':
         return html.Div(
-            tab_1
+            tb.tab_1
         )
     elif tab == 'tab-2':
         return html.Div(
-            tab_2
+            tb.tab_2
         )
     elif tab == 'tab-3':
         return html.Div(    
-            tab_3
+            tb.tab_3
         )
     elif tab == 'tab-4':
         return html.Div(
-            tab_4
+            tb.tab_4
         )
     elif tab == 'tab-5':
         return html.Div(
-            tab_5
+            tb.tab_5
         )
 
 @app.callback(
@@ -118,6 +121,8 @@ def update_figure(_, national_dropdown,national_switches_input, start_date, end_
 def regional(_,regional_dropdown,regional_cases,regional_switches_input,start_date,end_date):
     if (regional_cases == 'active'):
         dff = sv.df_region_current
+    elif regional_cases == 'total':
+        dff = sv.df_region_current.cumsum()
     elif regional_cases == 'deaths':
         dff = sv.df_deaths_current
     elif regional_cases == 'uci':
@@ -132,7 +137,33 @@ def regional(_,regional_dropdown,regional_cases,regional_switches_input,start_da
             labels= dict({'Casos actuales':'Number of cases by region',
                         'Fecha':'Date'})
             )
-    return fig
+    if regional_switches_input != 0:
+        if regional_switches_input==1:
+            dff = dff/1000
+            fig = sv.px.line(dff,
+                        title= "Regional cases",
+                        labels= dict({'Casos actuales':'Number of cases by region',
+                        'Fecha':'Date'})
+                        )
+            return fig
+        elif regional_switches_input==2:
+            dff = sv.np.log10(dff)
+            fig = sv.px.line(dff,
+                        title= "Regional cases",
+                        labels= dict({'Casos actuales':'Number of cases by region',
+                        'Fecha':'Date'})
+                        )
+            return fig
+        elif regional_switches_input==3:
+            dff = sv.np.log10(dff/1000)
+            fig = sv.px.line(dff,
+                        title= "Regional cases",
+                        labels= dict({'Casos actuales':'Number of cases by region',
+                        'Fecha':'Date'})
+                        )
+            return fig
+    else: return fig
+
 
 @app.callback(
     Output('time_series_three', 'figure'),
@@ -147,15 +178,27 @@ def regional(_,regional_dropdown,regional_cases,regional_switches_input,start_da
 def plotrealgo(_, seird_dropdown,start_date,end_date):
     S, E, I, R, D = sv.susceptible, sv.exposed, sv.infectious, sv.recovered4, sv.deaths
     fig = sv.go.Figure()
-    fig.add_trace(sv.go.Line(name="Susceptible", x=S.index.loc[(S.index >= start_date) & (S.index <= end_date)], y=S.iloc[:, 0], line_color="dark blue"))
-    fig.add_trace(sv.go.Line(name="Exposed", x=E.index.loc[(E.index >= start_date) & (E.index <= end_date)], y=E.iloc[:, 0], line_color="gold"))
-    fig.add_trace(sv.go.Line(name="Infectious", x=I.index.loc[(I.index >= start_date) & (I.index <= end_date)], y=I.iloc[:, 0], line_color="red"))
-    fig.add_trace(sv.go.Line(name="Recovered", x=R.index.loc[(R.index >= start_date) & (R.index <= end_date)], y=R.iloc[:, 0], line_color="green"))
-    fig.add_trace(sv.go.Line(name="Deaths", x=D.index.loc[(D.index >= start_date) & (D.index <= end_date)], y=D.iloc[:, 0], line_color="black"))
+    for chosen in seird_dropdown:
+        if (chosen == 'S'):
+            fig.add_trace(sv.go.Line(name="Susceptible", x=S.index.loc[(S.index >= start_date) & (S.index <= end_date)], y=S.iloc[:, 0], line_color="dark blue"))
+        elif (chosen == 'E'):
+            fig.add_trace(sv.go.Line(name="Exposed", x=E.index.loc[(E.index >= start_date) & (E.index <= end_date)], y=E.iloc[:, 0], line_color="gold"))
+        elif (chosen == 'I'):
+            fig.add_trace(sv.go.Line(name="Infectious", x=I.index.loc[(I.index >= start_date) & (I.index <= end_date)], y=I.iloc[:, 0], line_color="red"))
+        elif (chosen == 'R'):
+            fig.add_trace(sv.go.Line(name="Recovered", x=R.index.loc[(R.index >= start_date) & (R.index <= end_date)], y=R.iloc[:, 0], line_color="green"))
+        elif (chosen == 'D'):
+            fig.add_trace(sv.go.Line(name="Deaths", x=D.index.loc[(D.index >= start_date) & (D.index <= end_date)], y=D.iloc[:, 0], line_color="black"))
+        else: return fig
     fig.update_layout(title='SEIRD model real data',
                       yaxis_title='SEIRD cases',
-                      xaxis_title='Date')
+                      xaxis_title='Date')                 
     return fig
+    
+
+
+
+
 
 @app.callback(
     Output('time_series_four', 'figure'),

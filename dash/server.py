@@ -29,12 +29,12 @@ df_pcr_region = pd.read_csv("https://raw.githubusercontent.com/MinCiencia/Datos-
 df_pcr_current = df_pcr_region[['Region', 'fecha', 'numero']].pivot(index='fecha', columns='Region', values='numero')
 
 
-###Critical patients
+#Critical patients
 df_uci_region = pd.read_csv("https://raw.githubusercontent.com/MinCiencia/Datos-COVID19/master/output/producto8/UCI_std.csv")
 
 df_uci_current = df_uci_region[['Region', 'fecha', 'numero']].pivot(index='fecha', columns='Region', values='numero')
 
-##Imports national data
+#Imports national data
 
 df = pd.read_csv('https://raw.githubusercontent.com/MinCiencia/Datos-COVID19/master/output/producto5/TotalesNacionales_T.csv',
                 error_bad_lines=False
