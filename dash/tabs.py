@@ -347,21 +347,21 @@ tab_4 = dbc.Row([
                                 )
                             ]),
                         dbc.Row([
-                            dbc.Col(
+                            dbc.Col([
                                 dbc.Label('ICU beds per 1000 people'),
                                 dbc.Input(
                                     id="seirdmo_icu_beds", type="number", placeholder="ICU Beds per 1000",
                                     min=0.0, max=100.0, step=0.1, value=34.0,
                                 ),
-                            ),
-                            dbc.Col(
+                            ]),
+                            dbc.Col([
                                 dbc.Label('PCR per 1000 people'),
                                 dbc.Input(
                                     id="seirdmo_pcr", type="number", placeholder="PCR per 1000",
                                     min=0.0, max=100.0, step=0.1, value=34.0,
                                 ),
-                            ),
                             ]),
+                        ]),
                         dbc.FormGroup([
                                 dbc.Label('Probability of going to ICU when infected (%)'),
                                 html.Br(),
