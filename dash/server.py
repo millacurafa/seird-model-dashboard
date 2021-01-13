@@ -231,7 +231,7 @@ def plotlyseirdgo(t, S, E, I, R, D):
       fig.add_trace(go.Line(name="Infectious", x=t, y=I, line_color="red"))
       fig.add_trace(go.Line(name="Recovered", x=t, y=R, line_color="green"))
       fig.add_trace(go.Line(name="Deaths", x=t, y=D, line_color="black"))
-      fig.update_layout(title='SEIRD model',
+      fig.update_layout(title='SEIRD model simulation',
                       yaxis_title='SEIRD cases',
                       xaxis_title='Date')
       return fig

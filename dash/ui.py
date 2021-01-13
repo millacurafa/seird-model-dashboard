@@ -184,6 +184,9 @@ def plotrealseird(_, seird_dropdown,start_date,end_date):
             ##For tab_4
             State('seirdmo_daypicker', 'date'),
             State('seirdmo_initial_cases', 'value'),
+            State('seirdmo_initial_deaths', 'value'),
+            State('seirdmo_initial_exposed', 'value'),
+            State('seirdmo_initial_recovered', 'value'),            
             State('seirdmo_population', 'value'),
             State('seirdmo_icu_beds', 'value'),
             State('seirdmo_p_I_to_C', 'value'),
@@ -191,17 +194,41 @@ def plotrealseird(_, seird_dropdown,start_date,end_date):
             State('seirdmo_r0_slider', 'value')
     ])
 
-def plotseirdgo(_, date, seirdmo_initial_cases,seirdmo_population,seirdmo_icu_beds,seirdmo_p_I_to_C,seirdmo_p_C_to_D,seirdmo_r0_slider):
-    fig = sv.go.Figure()
-    fig.add_trace(sv.go.Line(name="Susceptible", x=sv.t, y=sv.S, line_color="dark blue"))
-    fig.add_trace(sv.go.Line(name="Exposed", x=sv.t, y=sv.E, line_color="gold"))
-    fig.add_trace(sv.go.Line(name="Infectious", x=sv.t, y=sv.I, line_color="red"))
-    fig.add_trace(sv.go.Line(name="Recovered", x=sv.t, y=sv.R, line_color="green"))
-    fig.add_trace(sv.go.Line(name="Deaths", x=sv.t, y=sv.D, line_color="black"))
-    fig.update_layout(title='SEIRD model',
-                      yaxis_title='SEIRD cases',
-                      xaxis_title='Date')
-    return fig
+def plotseirdgo(_, 
+                date, 
+                seirdmo_initial_cases,
+                seirdmo_initial_deaths,
+                seirdmo_initial_exposed,
+                seirdmo_initial_recovered,
+                seirdmo_population,
+                seirdmo_icu_beds,
+                seirdmo_p_I_to_C,
+                seirdmo_p_C_to_D,
+                seirdmo_r0_slider):
+    N = seirdmo_population #Chilean population; Source: World Bank
+    deaths_model = seirdmo_initial_deaths #deaths
+    recovered_model = seirdmo_initial_recovered #recovered
+    infectious_model = seirdmo_initial_cases #infectious
+    susceptible_model = N -1 #susceptible
+    exposed_model = seirdmo_initial_exposed # contracted the disease but are not yet infectious 
+    D = 10 # Infectious lasts
+    gamma = 1/D
+    R0 = seirdmo_r0_slider # the total number of people an infected person infects
+    beta = R0*gamma # infected person infects beta people per day
+    alpha = seirdmo_p_C_to_D/100 # five percent death rate
+    rho = 1/14 # fourteen days from infection until death
+    delta = 1/7  # incubation period of seven days
+    S0, E0, I0, R0, D0 = susceptible_model, exposed_model, infectious_model, R0, deaths_model  #Initial conditions
+
+    ##Creates time
+    t = sv.np.linspace(0, 700) # Grid of time points (in days)
+    y0 = S0, E0, I0, R0, D0 # Initial conditions vector
+
+    # Integrate the SIR equations over the time grid, t.
+    ret = sv.odeint(sv.derivate, y0, t, args=(N, beta, gamma, delta, alpha, rho))
+    S, E, I, R, D = ret.T
+    return sv.plotlyseirdgo(t, S, E, I, R, D)
+      
 
 server = app.server
 app.config.suppress_callback_exceptions = True

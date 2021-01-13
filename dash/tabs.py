@@ -311,27 +311,56 @@ tab_4 = dbc.Row([
                                     id='seirdmo_daypicker',
                             ),
                         ]),
-                        dbc.FormGroup([
+                        dbc.Row([
+                            dbc.Col([
                                 dbc.Label("Initial Cases"),
                                 dbc.Input(
                                     id="seirdmo_initial_cases", type="number", placeholder="initial_cases",
                                     min=1, max=1_000_000, step=1, value=10,
-                                )
+                                )]),
+                            dbc.Col([
+                                dbc.Label("Initial Deaths"),
+                                dbc.Input(
+                                    id="seirdmo_initial_deaths", type="number", placeholder="initial_deaths",
+                                    min=1, max=1_000_000, step=1, value=0,
+                                )]),    
                             ]),
-
+                        dbc.Row([
+                            dbc.Col([
+                                dbc.Label("Initial Exposed"),
+                                dbc.Input(
+                                    id="seirdmo_initial_exposed", type="number", placeholder="initial_exposed",
+                                    min=1, max=1_000_000, step=1, value=0,
+                                )]),
+                            dbc.Col([
+                                dbc.Label("Initial Recovered"),
+                                dbc.Input(
+                                    id="seirdmo_initial_recovered", type="number", placeholder="initial_recovered",
+                                    min=1, max=1_000_000, step=1, value=0,
+                                )]),    
+                            ]),
                         dbc.FormGroup([
                                 dbc.Label("Population"),
                                 dbc.Input(
                                     id="seirdmo_population", type="number", placeholder="population",
-                                    min=10_000, max=1_000_000_000, step=10_000, value=80_000_000,
+                                    min=10_000, max=1_000_000_000, step=10_000, value=18_300_000,
                                 )
                             ]),
-                        dbc.FormGroup([
-                                dbc.Label('ICU beds per 100k people'),
+                        dbc.Row([
+                            dbc.Col(
+                                dbc.Label('ICU beds per 1000 people'),
                                 dbc.Input(
-                                    id="seirdmo_icu_beds", type="number", placeholder="ICU Beds per 100k",
+                                    id="seirdmo_icu_beds", type="number", placeholder="ICU Beds per 1000",
                                     min=0.0, max=100.0, step=0.1, value=34.0,
                                 ),
+                            ),
+                            dbc.Col(
+                                dbc.Label('PCR per 1000 people'),
+                                dbc.Input(
+                                    id="seirdmo_pcr", type="number", placeholder="PCR per 1000",
+                                    min=0.0, max=100.0, step=0.1, value=34.0,
+                                ),
+                            ),
                             ]),
                         dbc.FormGroup([
                                 dbc.Label('Probability of going to ICU when infected (%)'),
@@ -352,7 +381,7 @@ tab_4 = dbc.Row([
                                         min=0.01,
                                         max=100.0,
                                         step=0.01,
-                                        value=50.0,
+                                        value=5.0,
                                         tooltip={'always_visible': False, "placement": "bottom"}
                                     ),
                             ]),
