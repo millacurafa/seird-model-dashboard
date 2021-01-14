@@ -233,7 +233,7 @@ def plotlyseirdgo(t, S, E, I, R, D):
       fig.add_trace(go.Line(name="Deaths", x=t, y=D, line_color="black"))
       fig.update_layout(title='SEIRD model simulation',
                       yaxis_title='SEIRD cases',
-                      xaxis_title='Date')
+                      xaxis_title='Number of days')
       return fig
 
 # def plotlyrealgo(S, E, I, R, D):    

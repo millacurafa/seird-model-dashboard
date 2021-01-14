@@ -125,15 +125,103 @@ main_content_two = dbc.Col([
             "padding": "2rem 1rem",
             })
 ## Main content three
-main_content_three = dbc.Col(html.Div(dcc.Graph(id='time_series_three',figure=fig3)), 
-            width=8,
-            style = {
-                            "margin-left": "4rem",
-                            "margin-right": "2rem",
-                            "padding": "2rem 1rem",
-            })  
+main_content_three = dbc.Col([  
+
+    dbc.Row(dbc.Col(dcc.Graph(id='time_series_three',figure=fig3),width=12))
+    ], 
+    width=8,
+    style = {
+    "margin-left": "4rem",
+    "margin-right": "2rem",
+    "padding": "2rem 1rem",
+    })  
 ## Main content four
-main_content_four = dbc.Col(html.Div(dcc.Graph(id='time_series_four',figure=fig4)), 
+main_content_four = dbc.Col([
+    dbc.Row([
+        
+        dbc.Col(
+            dbc.FormGroup([
+                            dbc.Label('Choose a Region'),
+                            html.Br(),
+                            dcc.Dropdown(
+                                options=[
+                                    {'label': 'Arica y Parinacota', 'value': 'Arica y Parinacota'},
+                                    {'label': 'Tarapacá', 'value': 'Tarapaca'},
+                                    {'label': 'Antofagasta', 'value': 'Antofagasta'},
+                                    {'label': 'Atacama', 'value': 'Atacama'},
+                                    {'label': 'Coquimbo', 'value': 'Coquimbo'},
+                                    {'label': 'Valparaíso', 'value': 'Valparaiso'},
+                                    {'label': 'Metropolitana', 'value': 'Metropolitana'},
+                                    {'label': 'O’Higgins', 'value': 'Del Libertador General Bernardo O’Higgins'},
+                                    {'label': 'Maule', 'value': 'Maule'},
+                                    {'label': 'Ñuble', 'value': 'Nuble'},
+                                    {'label': 'Biobío', 'value': 'Biobio'},
+                                    {'label': 'Araucanía', 'value': 'La Araucania'},
+                                    {'label': 'Los Ríos', 'value': 'Los Rios'},
+                                    {'label': 'Los Lagos', 'value': 'Los Lagos'},
+                                    {'label': 'Aysén', 'value': 'Aysen'},
+                                    {'label': 'Magallanes', 'value': 'Magallanes y la Antartica'},
+                                ],
+                                multi=False,
+                                value='Biobio',
+                                id='seird_regional_dropdown'
+                                
+                            )
+                        ]), width=4
+        ), 
+        dbc.Col(
+            dbc.FormGroup([
+                            dbc.Label('Choose a City'),
+                            html.Br(),
+                            dcc.Dropdown(
+                                options=[
+                                    {'label': 'Arica y Parinacota', 'value': 'Arica y Parinacota'},
+                                    {'label': 'Tarapacá', 'value': 'Tarapaca'},
+                                    {'label': 'Antofagasta', 'value': 'Antofagasta'},
+                                    {'label': 'Atacama', 'value': 'Atacama'},
+                                    {'label': 'Coquimbo', 'value': 'Coquimbo'},
+                                    {'label': 'Valparaíso', 'value': 'Valparaiso'},
+                                    {'label': 'Metropolitana', 'value': 'Metropolitana'},
+                                    {'label': 'O’Higgins', 'value': 'Del Libertador General Bernardo O’Higgins'},
+                                    {'label': 'Maule', 'value': 'Maule'},
+                                    {'label': 'Ñuble', 'value': 'Nuble'},
+                                    {'label': 'Biobío', 'value': 'Biobio'},
+                                    {'label': 'Araucanía', 'value': 'La Araucania'},
+                                    {'label': 'Los Ríos', 'value': 'Los Rios'},
+                                    {'label': 'Los Lagos', 'value': 'Los Lagos'},
+                                    {'label': 'Aysén', 'value': 'Aysen'},
+                                    {'label': 'Magallanes', 'value': 'Magallanes y la Antartica'},
+                                ],
+                                multi=False,
+                                value=['Arica y Parinacota',
+                                    
+                                ],
+                                id='seird_city_dropdown'
+                                
+                            )
+                        ]), width=4
+        ),
+        
+        dbc.Col(
+            dbc.FormGroup([
+                dbc.Label('Date of first infection'),
+                    html.Br(),
+                    dcc.DatePickerSingle(
+                        day_size=30,  # how big the date picker appears
+                        display_format="YYYY-MM-DD",
+                        date='2020-01-01',
+                        min_date_allowed=dt(2020, 1, 1),
+                        max_date_allowed=dt.today(),
+                        initial_visible_month=dt(2020, 1, 15),
+                        placeholder="test",
+                        id='seirdmo_daypicker',
+                    )
+            ]), width=4    
+        ),
+    ]),
+
+
+dbc.Row(dbc.Col(dcc.Graph(id='time_series_four',figure=fig4), width=12))], 
             width=8,
             style = {
                             "margin-left": "4rem",
@@ -297,32 +385,26 @@ tab_3 = dbc.Row([
 tab_4 = dbc.Row([ 
             dbc.Col(
                 html.Div([
-                        dbc.FormGroup([
-                            dbc.Label('Date of first infection'),
-                            html.Br(),
-                            dcc.DatePickerSingle(
-                                    day_size=30,  # how big the date picker appears
-                                    display_format="YYYY-MM-DD",
-                                    date='2020-01-01',
-                                    min_date_allowed=dt(2020, 1, 1),
-                                    max_date_allowed=dt(2021, 1, 5),
-                                    initial_visible_month=dt(2020, 1, 15),
-                                    placeholder="test",
-                                    id='seirdmo_daypicker',
-                            ),
+                        dbc.Row([
+                            dbc.Col([
+                                dbc.Label("Days to predict"),
+                                dbc.Input(
+                                    id="seirdmo_days_today", type="number", placeholder="initial_cases",
+                                    min=0, max=1_000, step=1, value=365,
+                                )])
                         ]),
                         dbc.Row([
                             dbc.Col([
                                 dbc.Label("Initial Cases"),
                                 dbc.Input(
                                     id="seirdmo_initial_cases", type="number", placeholder="initial_cases",
-                                    min=1, max=1_000_000, step=1, value=10,
+                                    min=0, max=1_000_000, step=1, value=10,
                                 )]),
                             dbc.Col([
                                 dbc.Label("Initial Deaths"),
                                 dbc.Input(
                                     id="seirdmo_initial_deaths", type="number", placeholder="initial_deaths",
-                                    min=1, max=1_000_000, step=1, value=0,
+                                    min=0, max=1_000_000, step=1, value=0,
                                 )]),    
                             ]),
                         dbc.Row([
@@ -330,32 +412,32 @@ tab_4 = dbc.Row([
                                 dbc.Label("Initial Exposed"),
                                 dbc.Input(
                                     id="seirdmo_initial_exposed", type="number", placeholder="initial_exposed",
-                                    min=1, max=1_000_000, step=1, value=0,
+                                    min=0, max=1_000_000, step=1, value=0,
                                 )]),
                             dbc.Col([
                                 dbc.Label("Initial Recovered"),
                                 dbc.Input(
                                     id="seirdmo_initial_recovered", type="number", placeholder="initial_recovered",
-                                    min=1, max=1_000_000, step=1, value=0,
+                                    min=0, max=1_000_000, step=1, value=0,
                                 )]),    
                             ]),
                         dbc.FormGroup([
                                 dbc.Label("Population"),
                                 dbc.Input(
                                     id="seirdmo_population", type="number", placeholder="population",
-                                    min=10_000, max=1_000_000_000, step=10_000, value=18_300_000,
+                                    min=1_000, max=1_000_000_000, step=1_000, value=18_300_000,
                                 )
                             ]),
                         dbc.Row([
                             dbc.Col([
-                                dbc.Label('ICU beds per 1000 people'),
+                                dbc.Label('ICU beds per 1K people'),
                                 dbc.Input(
                                     id="seirdmo_icu_beds", type="number", placeholder="ICU Beds per 1000",
                                     min=0.0, max=100.0, step=0.1, value=34.0,
                                 ),
                             ]),
                             dbc.Col([
-                                dbc.Label('PCR per 1000 people'),
+                                dbc.Label('PCR tests per 1K people'),
                                 dbc.Input(
                                     id="seirdmo_pcr", type="number", placeholder="PCR per 1000",
                                     min=0.0, max=100.0, step=0.1, value=34.0,
@@ -367,10 +449,10 @@ tab_4 = dbc.Row([
                                 html.Br(),
                                 dcc.Slider(
                                     id='seirdmo_p_I_to_C',
-                                    min=0.01,
+                                    min=0.1,
                                     max=100.0,
-                                    step=0.01,
-                                    value=5.0,
+                                    step=0.1,
+                                    value=20.0,
                                     tooltip={'always_visible': False, "placement": "bottom"}
                                 ),
                             ]),
@@ -378,9 +460,9 @@ tab_4 = dbc.Row([
                                     dbc.Label('Probability of dying in ICU (%)'),
                                     dcc.Slider(
                                         id='seirdmo_p_C_to_D',
-                                        min=0.01,
+                                        min=0.1,
                                         max=100.0,
-                                        step=0.01,
+                                        step=0.1,
                                         value=5.0,
                                         tooltip={'always_visible': False, "placement": "bottom"}
                                     ),
@@ -390,9 +472,9 @@ tab_4 = dbc.Row([
                                     dcc.Slider(
                                         id='seirdmo_r0_slider',
                                         min=0.1,
-                                        max=10,
+                                        max=10.0,
                                         step=0.1,
-                                        value=2,
+                                        value=2.0,
                                         tooltip={'always_visible': False, "placement": "bottom"}
                                     ),
                             ]),

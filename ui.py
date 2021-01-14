@@ -4,6 +4,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import dash_bootstrap_components as dbc
 import tabs as tb
+import datetime 
 # imports backend
 import server as sv
 
@@ -181,11 +182,15 @@ def plotrealseird(_, seird_dropdown,start_date,end_date):
     return fig
 
 @app.callback(
-    Output('time_series_four', 'figure'),
-    Input('submit_button_state_four', 'n_clicks'),
+    
+            Output('time_series_four', 'figure'),
+            #Output('seirdmo_days_today', 'children')     
+
+            Input('submit_button_state_four', 'n_clicks'),
     [
             ##For tab_4
             State('seirdmo_daypicker', 'date'),
+            State('seirdmo_days_today', 'value'),
             State('seirdmo_initial_cases', 'value'),
             State('seirdmo_initial_deaths', 'value'),
             State('seirdmo_initial_exposed', 'value'),
@@ -194,11 +199,13 @@ def plotrealseird(_, seird_dropdown,start_date,end_date):
             State('seirdmo_icu_beds', 'value'),
             State('seirdmo_p_I_to_C', 'value'),
             State('seirdmo_p_C_to_D', 'value'),
-            State('seirdmo_r0_slider', 'value')
+            State('seirdmo_r0_slider', 'value'),
+
     ])
 
 def plotseirdgo(_, 
                 date, 
+                seirdmo_days_today,
                 seirdmo_initial_cases,
                 seirdmo_initial_deaths,
                 seirdmo_initial_exposed,
@@ -208,6 +215,12 @@ def plotseirdgo(_,
                 seirdmo_p_I_to_C,
                 seirdmo_p_C_to_D,
                 seirdmo_r0_slider):
+    
+    # if date != '2020-01-01':
+    #     delta = (datetime.datetime.today() - datetime.datetime.strptime(date,'%Y-%m-%d')).days
+    # else:
+    #     delta = (datetime.datetime.today() - datetime.datetime(2020,1,1)).days
+        
     N = seirdmo_population #Chilean population; Source: World Bank
     deaths_model = seirdmo_initial_deaths #deaths
     recovered_model = seirdmo_initial_recovered #recovered
@@ -224,7 +237,7 @@ def plotseirdgo(_,
     S0, E0, I0, R0, D0 = susceptible_model, exposed_model, infectious_model, R0, deaths_model  #Initial conditions
 
     ##Creates time
-    t = sv.np.linspace(0, 700) # Grid of time points (in days)
+    t = sv.np.linspace(0, seirdmo_days_today) # Grid of time points (in days)
     y0 = S0, E0, I0, R0, D0 # Initial conditions vector
 
     # Integrate the SIR equations over the time grid, t.
