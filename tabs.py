@@ -286,7 +286,7 @@ tab_2 = dbc.Row([
                                     {'label': 'Total cases', 'value': 'total'},
                                     {'label': 'Active cases', 'value': 'active'},
                                     {'label': 'Deaths', 'value': 'deaths'},
-                                    {'label': 'Casos criticos', 'value': 'uci'},
+                                    {'label': 'Critical cases', 'value': 'uci'},
                                     {'label': 'Total PCR exams', 'value': 'pcr'},
                                 ],
                                 multi=False,
