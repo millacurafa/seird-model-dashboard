@@ -4,7 +4,7 @@ Dashboard for analysis of Chilean Covid19 data, including a Susceptible-Exposed-
 
 A live version is being constantly updated at [herokuapp.com](https://covid19-chile-dash.herokuapp.com/) 
 
-<img src="https://raw.githubusercontent.com/millacurafa/seird-model-dashboard/main/static/images/demo_version.png" alt="covid_19_millacurafa" width="400"/>
+<img src="https://raw.githubusercontent.com/millacurafa/seird-model-dashboard/main/static/images/demo_version.png" alt="covid_19_millacurafa" width="800"/>
 
 ## Getting Started
 
