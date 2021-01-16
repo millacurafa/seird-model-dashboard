@@ -180,7 +180,7 @@ main_content_four = dbc.Col([
                                 id='seird_city_dropdown'
                                 
                             )
-                        ]), width=4
+                        ]), width=4 
         ),
         
         dbc.Col(
