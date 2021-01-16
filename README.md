@@ -1,8 +1,10 @@
 # SEIRD-model-dashboard
 
-Dashboard for analysis of Chilean Covid19 data, including SEIRD model
+Dashboard for analysis of Chilean Covid19 data, including a Susceptible-Exposed-Infected-Recovered-Dead (SEIRD) predictive model
 
-A live version is being constantly updated at [herokuapp.com](https://covid19-chile-dash.herokuapp.com/) (*currently fixing pip version conflicts*)
+A live version is being constantly updated at [herokuapp.com](https://covid19-chile-dash.herokuapp.com/) 
+
+<img src="/images/static/images/demo_version.png" alt="covid_19_millacurafa" width="400"/>
 
 ## Getting Started
 
@@ -10,12 +12,11 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Requirements
 
-USe `pip3 install -r requirements.txt`  to install all following libraries:
+Use `pip3 install -r requirements.txt`  to install all following libraries:
 
 ```python
 # Python libraries to be installed
 
-appdirs==1.4.4
 Brotli==1.0.9
 certifi==2020.12.5
 click==7.1.2
@@ -25,8 +26,6 @@ dash-core-components==1.14.1
 dash-html-components==1.1.1
 dash-renderer==1.8.3
 dash-table==4.11.1
-distlib==0.3.1
-filelock==3.0.12
 Flask==1.1.2
 Flask-Compress==1.8.0
 future==0.18.2
@@ -35,17 +34,15 @@ itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
 numpy==1.19.5
-pandas==1.2.0
-pipenv==2020.11.15
+pandas==1.1.5
 plotly==4.14.3
 python-dateutil==2.8.1
 pytz==2020.5
 retrying==1.3.3
-scipy==1.6.0
+scipy==1.5.4
 six==1.15.0
-virtualenv==20.3.1
-virtualenv-clone==0.5.4
 Werkzeug==1.0.1
+wincertstore==0.2
 
 ```
 
@@ -55,9 +52,9 @@ A step by step series of examples that tell you how to get a development env run
 
 ```
 git clone https://github.com/millacurafa/seird-model-dashboard
-
+```
 or via SSH
-
+```
 git clone git@github.com:millacurafa/seird-model-dashboard.git
 ```
 
@@ -92,6 +89,11 @@ Last Heroku [update](https://devcenter.heroku.com/changelog-items/1740) includes
 
 ```
 pip install pip==20.0.2
+```
+Also you would need to downgrade Pandas and ScyPy
+```
+pip install pandas==1.1.5 scipy==1.5.4
+
 ```
 
 ## Built With
