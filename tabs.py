@@ -34,7 +34,7 @@ main_content_one = dbc.Col([
                                     options=[
                                         {"label": "per 1000 inhabitants", "value": 1},
                                         {"label": "logarithmic scale", "value": 2},
-                                        {"label": "moving average", "value": 4, "disabled": True},
+                                        {"label": "moving average", "value": 4, "disabled": False},
                                     ],
                                     value=[],
                                     id="national_switches_input",
@@ -163,7 +163,7 @@ main_content_four = dbc.Col([
                                     {'label': 'Magallanes', 'value': 'Magallanes y la Antartica'},
                                 ],
                                 multi=False,
-                                value='Biobio',
+                                value='Valparaiso',
                                 id='seird_regional_dropdown'
                                 
                             )
@@ -174,28 +174,9 @@ main_content_four = dbc.Col([
                             dbc.Label('Choose a City'),
                             html.Br(),
                             dcc.Dropdown(
-                                options=[
-                                    {'label': 'Arica y Parinacota', 'value': 'Arica y Parinacota'},
-                                    {'label': 'Tarapacá', 'value': 'Tarapaca'},
-                                    {'label': 'Antofagasta', 'value': 'Antofagasta'},
-                                    {'label': 'Atacama', 'value': 'Atacama'},
-                                    {'label': 'Coquimbo', 'value': 'Coquimbo'},
-                                    {'label': 'Valparaíso', 'value': 'Valparaiso'},
-                                    {'label': 'Metropolitana', 'value': 'Metropolitana'},
-                                    {'label': 'O’Higgins', 'value': 'Del Libertador General Bernardo O’Higgins'},
-                                    {'label': 'Maule', 'value': 'Maule'},
-                                    {'label': 'Ñuble', 'value': 'Nuble'},
-                                    {'label': 'Biobío', 'value': 'Biobio'},
-                                    {'label': 'Araucanía', 'value': 'La Araucania'},
-                                    {'label': 'Los Ríos', 'value': 'Los Rios'},
-                                    {'label': 'Los Lagos', 'value': 'Los Lagos'},
-                                    {'label': 'Aysén', 'value': 'Aysen'},
-                                    {'label': 'Magallanes', 'value': 'Magallanes y la Antartica'},
-                                ],
+                                options= [{'label': 'Zapallar', 'value': 'Zapallar'}],
                                 multi=False,
-                                value=['Arica y Parinacota',
-                                    
-                                ],
+                                value=['Zapallar'],
                                 id='seird_city_dropdown'
                                 
                             )
@@ -241,6 +222,7 @@ tab_1 = dbc.Row([
                             dcc.Dropdown(
                                 options=[
                                     {'label': 'Total cases', 'value': 'Casos totales'},
+                                    {'label': 'Daily cases', 'value': 'Casos nuevos totales'},
                                     {'label': 'Active cases', 'value': 'Casos activos'},
                                     {'label': 'Deaths', 'value': 'Fallecidos'},
                                     {'label': 'Recovered', 'value': 'recovered'},

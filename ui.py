@@ -100,11 +100,43 @@ def update_figure(_, national_dropdown,national_switches_input, start_date, end_
                       yaxis_title='Number of National cases per 1000 inhabitants (in log10 scale)',
                       xaxis_title='Date')
             return fig
+        elif n_switches==4:
+            dff = dff.rolling(14).mean()
+            fig = sv.px.line(dff)
+            fig.update_layout(title= "National cases",
+                      yaxis_title='Number of National cases (MA14)',
+                      xaxis_title='Date')
+            return fig
+        elif n_switches==5:
+            dff = (dff/(sv.N/1000)).rolling(14).mean()
+            fig = sv.px.line(dff)
+            fig.update_layout(title= "National cases",
+                      yaxis_title='Number of National cases per 1000 inhabitants (MA14)',
+                      xaxis_title='Date')
+            return fig
+        elif n_switches==6:
+            dff = sv.np.log10(dff.rolling(14).mean())
+            fig = sv.px.line(dff)
+            fig.update_layout(title= "National cases",
+                      yaxis_title='Number of National cases (log10(MA14))',
+                      xaxis_title='Date')
+            return fig
+        elif n_switches==7:
+            dff = sv.np.log10((dff/(sv.N/1000)).rolling(14).mean())
+            fig = sv.px.line(dff)
+            fig.update_layout(title= "National cases",
+                      yaxis_title='Number of National cases per 1000 inhabitants (log10(MA14))',
+                      xaxis_title='Date')
+            return fig
     else: return fig 
 
+
 @app.callback(
-    Output('time_series_two', 'figure'),
-    Input('submit_button_state_two', 'n_clicks'),
+
+        Output('time_series_two', 'figure'),
+    
+        Input('submit_button_state_two', 'n_clicks'),
+   
     [# For tab_2
             State('regional_dropdown', 'value'),
             State('regional_cases', 'value'),
@@ -180,6 +212,26 @@ def plotrealseird(_, seird_dropdown,start_date,end_date):
                       yaxis_title='SEIRD cases',
                       xaxis_title='Date')
     return fig
+
+# @app.callback(
+#     [
+     
+#         Output('seird_city_dropdown', 'options'),
+#         #Output('seirdmo_population', 'value')
+#     ],
+#     [
+     
+#         Input('seird_regional_dropdown','value'),
+#         #Input('seird_city_dropdown','value')
+    
+#     ])
+
+# def updatedropdown(seird_regional_dropdown):
+#     cities = sv.df_city_current[sv.df_city_current['Region']== seird_regional_dropdown].groupby('Comuna')[['Poblacion']].mean()
+#     OptionList = [{'label': city, 'value': city} for city in cities.index]
+#     OptionList.insert(0,{'label': 'Total', 'value': 'Total'})
+#     return OptionList
+
 
 @app.callback(
     
