@@ -1,4 +1,4 @@
-# seird-model-dashboard
+# SEIRD-model-dashboard
 
 Dashboard for analysis of Chilean Covid19 data, including SEIRD model
 
