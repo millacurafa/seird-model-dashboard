@@ -35,12 +35,13 @@ itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
 numpy==1.19.5
-pandas==1.0.0
+pandas==1.2.0
+pipenv==2020.11.15
 plotly==4.14.3
 python-dateutil==2.8.1
 pytz==2020.5
 retrying==1.3.3
-scipy==1.5.0
+scipy==1.6.0
 six==1.15.0
 virtualenv==20.3.1
 virtualenv-clone==0.5.4
