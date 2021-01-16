@@ -1,8 +1,8 @@
-# seird-model-dashboard
+# SEIRD-model-dashboard
 
 Dashboard for analysis of Chilean Covid19 data, including SEIRD model
 
-A live version is being constantly updated at [herokuapp.com](https://covid19-chile-dash.herokuapp.com/) (Work in progress)
+A live version is being constantly updated at [herokuapp.com](https://covid19-chile-dash.herokuapp.com/) (*currently fixing pip version conflicts*)
 
 ## Getting Started
 
