@@ -86,7 +86,13 @@ Code is written using the snake_case standard for python apps.
 
 ## Deployment
 
-For deployment into Heroku check current `pip` version for possible conflicts
+For deployment into Heroku check current `pip` version for possible conflicts.
+
+Last Heroku [update](https://devcenter.heroku.com/changelog-items/1740) includes pip version `20.0.2` the first you should downgrade your version if needed. *Remember to do this in a virtual environment*
+
+```
+pip install pip==20.0.2
+```
 
 ## Built With
 
