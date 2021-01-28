@@ -25,7 +25,7 @@ app.layout = html.Div([
     dcc.Tabs(id='tabs_chosen', value='tab-1', children=[
         dcc.Tab(label='National', value='tab-1'),
         dcc.Tab(label='Regional', value='tab-2'),
-        dcc.Tab(label='SEIRD real data', value='tab-3'),
+       # dcc.Tab(label='SEIRD real data', value='tab-3'),
         dcc.Tab(label='SEIRD model', value='tab-4'),
         dcc.Tab(label='Docs', value='tab-5'),
     ]),
@@ -46,10 +46,10 @@ def render_content(tab):
         return html.Div(
             tb.tab_2
         )
-    elif tab == 'tab-3':
-        return html.Div(    
-            tb.tab_3
-        )
+  #  elif tab == 'tab-3':
+   #     return html.Div(    
+    #        tb.tab_3
+     #   )
     elif tab == 'tab-4':
         return html.Div(
             tb.tab_4
@@ -62,7 +62,7 @@ def render_content(tab):
 @app.callback(
  Output('time_series_one', 'figure'),
  Input('submit_button_state_one', 'n_clicks'),
- [
+[
     ##For tab_1
     State('national_dropdown', 'value'),
     State('national_switches_input', 'value'),

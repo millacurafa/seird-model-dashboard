@@ -372,7 +372,7 @@ tab_4 = dbc.Row([
                                 dbc.Label("Days to predict"),
                                 dbc.Input(
                                     id="seirdmo_days_today", type="number", placeholder="initial_cases",
-                                    min=0, max=1_000, step=1, value=365,
+                                    min=0, max=1_000, step=1, value=700,
                                 )])
                         ]),
                         dbc.Row([
