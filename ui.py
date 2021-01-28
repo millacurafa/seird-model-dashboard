@@ -18,7 +18,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.layout = html.Div([
     html.Div([html.Img(src='/static/images/databio_logo.svg',
         style = {'display': 'inline', 'width': '50%', 'max-width': '8rem'}),
-        html.H1("Covid19 Analysis 🇨🇱", style={'text-align': 'center', 'color':'white'}), 
+        html.H1("Covid19 Analysis 🇨🇱 V0.1", style={'text-align': 'center', 'color':'white'}), 
         html.P(['made with ❤ by ', html.A('millacurafa', href='https://github.com/millacurafa', style={'color':'white'})],
         style={'text-align': 'center', 'color':'white'}),
         ], className = 'navbar navbar-primary bg-dark'),
