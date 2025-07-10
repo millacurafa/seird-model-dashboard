@@ -1,7 +1,7 @@
 import dash
 from dash.dependencies import Input, Output, State
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 import dash_bootstrap_components as dbc
 import tabs as tb
 import datetime 
@@ -18,7 +18,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.layout = html.Div([
     html.Div([html.Img(src='/static/images/databio_logo.svg',
         style = {'display': 'inline', 'width': '50%', 'max-width': '8rem'}),
-        html.H1("Covid19 Analysis 🇨🇱 V0.1", style={'text-align': 'center', 'color':'white'}), 
+        html.H1("Covid19 Analysis 🇨🇱 V0.2", style={'text-align': 'center', 'color':'white'}), 
         html.P(['made with ❤ by ', html.A('millacurafa', href='https://github.com/millacurafa', style={'color':'white'})],
         style={'text-align': 'center', 'color':'white'}),
         ], className = 'navbar navbar-primary bg-dark'),
@@ -304,5 +304,5 @@ app.config.suppress_callback_exceptions = True
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run(debug=True)
 
