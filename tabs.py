@@ -1,21 +1,23 @@
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 import dash_bootstrap_components as dbc
 from datetime import date as dt
 import server as sv
+import plotly.express as px
+
 # Defines functions
 
 #Figs to display
 
-fig1 = sv.px.line(sv.df['Casos totales']).update_layout(title= "National cases",
+fig1 = px.line(sv.df['Casos totales']).update_layout(title= "National cases",
                     yaxis_title='Number of National cases',
                     xaxis_title='Date')
 
-fig2 = sv.px.line(sv.df_region_current_bypop['bypop']
+fig2 = px.line(sv.df_region_current_bypop['bypop']
     ).update_layout(title= "Regional cases",
                     yaxis_title='Number of Regional cases',
                     xaxis_title='Date')
-fig3 = sv.px.line(sv.df_seird
+fig3 = px.line(sv.df_seird
     ).update_layout(title='SEIRD model real data',
                     yaxis_title='SEIRD cases',
                     xaxis_title='Date')
@@ -27,7 +29,7 @@ fig4 = sv.plotlyseirdgo(sv.t, sv.S, sv.E, sv.I, sv.R, sv.D)
 main_content_one = dbc.Col([
     dbc.Row([
         dbc.Col(
-            dbc.FormGroup([
+            dbc.CardGroup([
                                 dbc.Label("Additional setup"),
                                 html.Br(),
                                 dbc.Checklist(
@@ -51,7 +53,7 @@ main_content_one = dbc.Col([
 main_content_two = dbc.Col([  
     dbc.Row([ 
         dbc.Col(
-        dbc.FormGroup(
+        dbc.CardGroup(
             [
                 dbc.Label("Additional setup"),
                 dbc.Checklist(
@@ -70,7 +72,7 @@ main_content_two = dbc.Col([
         ),
         dbc.Col(
             
-                        dbc.FormGroup([
+                        dbc.CardGroup([
                             dbc.Label('Choose Regions'),
                             html.Br(),
                             dcc.Dropdown(
@@ -140,7 +142,7 @@ main_content_four = dbc.Col([
     dbc.Row([
         
         dbc.Col(
-            dbc.FormGroup([
+            dbc.CardGroup([
                             dbc.Label('Choose a Region'),
                             html.Br(),
                             dcc.Dropdown(
@@ -170,7 +172,7 @@ main_content_four = dbc.Col([
                         ]), width=4
         ), 
         dbc.Col(
-            dbc.FormGroup([
+            dbc.CardGroup([
                             dbc.Label('Choose a City'),
                             html.Br(),
                             dcc.Dropdown(
@@ -184,7 +186,7 @@ main_content_four = dbc.Col([
         ),
         
         dbc.Col(
-            dbc.FormGroup([
+            dbc.CardGroup([
                 dbc.Label('Date of first infection'),
                     html.Br(),
                     dcc.DatePickerSingle(
@@ -216,7 +218,7 @@ tab_1 = dbc.Row([
                 html.Div([
                         html.P("Select variables to display", className="lead"),
                         html.Br(),
-                        dbc.FormGroup([
+                        dbc.CardGroup([
                             dbc.Label('Choose data to display'),
                             html.Br(),
                             dcc.Dropdown(
@@ -233,7 +235,7 @@ tab_1 = dbc.Row([
                                 id= 'national_dropdown',
                             )
                         ]),  
-                        dbc.FormGroup([
+                        dbc.CardGroup([
                             dbc.Label('Choose a date'),
                             html.Br(),
                             dcc.DatePickerRange(
@@ -246,7 +248,7 @@ tab_1 = dbc.Row([
                             )
                         ]),
                         dbc.Button("Apply", id="submit_button_state_one",
-                                color="primary", block=True)
+                                color="primary")
                     ]),
                     width=3,
                     style= {
@@ -266,7 +268,7 @@ tab_2 = dbc.Row([
             dbc.Col(
                 html.Div([
 
-                        dbc.FormGroup([
+                        dbc.CardGroup([
                             dbc.Label('Choose a date'),
                             html.Br(),
                             dcc.DatePickerRange(
@@ -278,7 +280,7 @@ tab_2 = dbc.Row([
                                 day_size = 30
                             )
                         ]),
-                        dbc.FormGroup([
+                        dbc.CardGroup([
                             dbc.Label('Choose data to display'),
                             html.Br(),
                             dcc.Dropdown(
@@ -297,7 +299,7 @@ tab_2 = dbc.Row([
                         ]), 
                         
                         dbc.Button("Apply", id="submit_button_state_two",
-                                color="primary", block=True)
+                                color="primary")
                     ]),
                     width=3,
                     style= {
@@ -318,7 +320,7 @@ tab_2 = dbc.Row([
 tab_3 = dbc.Row([ 
             dbc.Col(
                 html.Div([
-                        dbc.FormGroup([
+                        dbc.CardGroup([
                             dbc.Label('Choose data to display'),
                             html.Br(),
                             dcc.Dropdown(
@@ -335,7 +337,7 @@ tab_3 = dbc.Row([
                                 
                             )
                         ]),  
-                        dbc.FormGroup([
+                        dbc.CardGroup([
                             dbc.Label('Choose a date'),
                             html.Br(),
                             dcc.DatePickerRange(
@@ -348,7 +350,7 @@ tab_3 = dbc.Row([
                             )
                         ]),
                         dbc.Button("Apply", id="submit_button_state_three",
-                                color="primary", block=True)
+                                color="primary")
                     ]),
                     width=3,
                     style= {
@@ -403,7 +405,7 @@ tab_4 = dbc.Row([
                                     min=0, max=1_000_000, step=1, value=0,
                                 )]),    
                             ]),
-                        dbc.FormGroup([
+                        dbc.CardGroup([
                                 dbc.Label("Population"),
                                 dbc.Input(
                                     id="seirdmo_population", type="number", placeholder="population",
@@ -426,7 +428,7 @@ tab_4 = dbc.Row([
                                 ),
                             ]),
                         ]),
-                        dbc.FormGroup([
+                        dbc.CardGroup([
                                 dbc.Label('Probability of going to ICU when infected (%)'),
                                 html.Br(),
                                 dcc.Slider(
@@ -438,7 +440,7 @@ tab_4 = dbc.Row([
                                     tooltip={'always_visible': False, "placement": "bottom"}
                                 ),
                             ]),
-                            dbc.FormGroup([
+                            dbc.CardGroup([
                                     dbc.Label('Probability of dying in ICU (%)'),
                                     dcc.Slider(
                                         id='seirdmo_p_C_to_D',
@@ -449,7 +451,7 @@ tab_4 = dbc.Row([
                                         tooltip={'always_visible': False, "placement": "bottom"}
                                     ),
                             ]),
-                            dbc.FormGroup([
+                            dbc.CardGroup([
                                     dbc.Label('Reproduction rate (R) over time'),
                                     dcc.Slider(
                                         id='seirdmo_r0_slider',
@@ -462,7 +464,7 @@ tab_4 = dbc.Row([
                             ]),
                             
                             dbc.Button("Apply", id="submit_button_state_four",
-                                    color="primary", block=True)
+                                    color="primary")
     
                     ]),
                     width=3,
@@ -481,9 +483,7 @@ tab_4 = dbc.Row([
 ## Tab 5
 
 tab_5 = dbc.Row([ 
-            dbc.Col(# first, a jumbotron for the description and title
-            dbc.Jumbotron(
-            [
+            dbc.Col(
                 dbc.Container(
                     [
                         html.H1("Compartmentalisation", className="display-3"),
@@ -513,15 +513,10 @@ Additional variables need to be used, such as:
                                      )
                     ],
                     fluid=True,
-                )
-            ],
-            fluid=True,
-            className="jumbotron bg-white text-dark"
-        ),
-        ),
-        dbc.Col(# first, a jumbotron for the description and title
-        dbc.Jumbotron(
-            [
+                    className="bg-white text-dark"
+                ),
+            ),
+            dbc.Col(
                 dbc.Container(
                     [
                         html.H1("Formulas", className="display-3"),
@@ -556,11 +551,8 @@ Additional variables need to be used, such as:
                                      )
                     ],
                     fluid=True,
-                )
-            ],
-            fluid=True,
-            className="jumbotron bg-white text-dark"
-        ),
-        )
+                    className="bg-white text-dark"
+                ),
+            )
     ])
             
