@@ -3,7 +3,7 @@
 import pandas as pd
 import numpy  as np
 import plotly.graph_objects as go
-import plotly.express as px
+
 from scipy.integrate import odeint
 
 ##Imports regional data
