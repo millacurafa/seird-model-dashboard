@@ -3,12 +3,11 @@
 import pandas as pd
 import numpy  as np
 import plotly.graph_objects as go
-from plotly.graph_objs.scatter.marker import Line
 import plotly.express as px
 from scipy.integrate import odeint
 
 ##Imports regional data
-df_city_current = pd.read_csv("https://raw.githubusercontent.com/MinCiencia/Datos-COVID19/master/output/producto25/CasosActualesPorComuna_std.csv")
+df_city_current = pd.read_csv("https://raw.githubusercontent.com/ljofreflor/Datos-COVID19/f9a1a3f8794e508aaecf9436101db0c6566acc07/output/producto25/CasosActualesPorComuna_std.csv")
 
 # regional daily active cases
 
@@ -23,7 +22,7 @@ df_region_current = df_region_current[["Region", "Fecha", "Casos actuales"]].piv
 
 ###Deaths
 
-df_city_deaths = pd.read_csv("https://raw.githubusercontent.com/MinCiencia/Datos-COVID19/master/output/producto38/CasosFallecidosPorComuna_std.csv")
+df_city_deaths = pd.read_csv("https://raw.githubusercontent.com/felipepalma1/0000_CL_Datos-COVID19_MINSAL/780be65796269e42dbe349ea00207a8fefbde057/output/producto38/CasosFallecidosPorComuna_std.csv")
 df_deaths_region = df_city_deaths[df_city_deaths['Comuna']=='Total'].groupby(['Region','Fecha'])[['Casos fallecidos']].sum()   
 df_deaths_current = df_deaths_region.reset_index().pivot(index='Fecha', columns='Region', values='Casos fallecidos')
 
@@ -33,20 +32,20 @@ df_deaths_current_bypop  = df_deaths_region_bypop.reset_index().pivot(index='Fec
 
 ###Number of PCR exams
 
-df_pcr_region = pd.read_csv("https://raw.githubusercontent.com/MinCiencia/Datos-COVID19/master/output/producto7/PCR_std.csv")
+df_pcr_region = pd.read_csv("https://raw.githubusercontent.com/ngeorger/Datos-COVID19/5e7cf1b23581b64294288712944bdc08124f4f9d/output/producto7/PCR_std.csv")
 
 df_pcr_current = df_pcr_region[['Region', 'fecha', 'numero']].pivot(index='fecha', columns='Region', values='numero')
 
 
 #Critical patients
-df_uci_region = pd.read_csv("https://raw.githubusercontent.com/MinCiencia/Datos-COVID19/master/output/producto8/UCI_std.csv")
+df_uci_region = pd.read_csv("https://raw.githubusercontent.com/ngeorger/Datos-COVID19/5e7cf1b23581b64294288712944bdc08124f4f9d/output/producto8/UCI_std.csv")
 
 df_uci_current = df_uci_region[['Region', 'fecha', 'numero']].pivot(index='fecha', columns='Region', values='numero')
 
 #Imports national data
 
-df = pd.read_csv('https://raw.githubusercontent.com/MinCiencia/Datos-COVID19/master/output/producto5/TotalesNacionales_T.csv',
-                error_bad_lines=False
+df = pd.read_csv('https://raw.githubusercontent.com/felipepalma1/0000_CL_Datos-COVID19_MINSAL/refs/heads/master/output/producto5/TotalesNacionales_T.csv',
+               # error_bad_lines=False
                  )
 
 df= df.set_index('Fecha')
@@ -108,7 +107,7 @@ df= df.set_index('Fecha')
 #        log_y = True
 #        )    
 # Adds PCR test data 
-pcr_cases = pd.read_csv('https://raw.githubusercontent.com/MinCiencia/Datos-COVID19/master/output/producto7/PCR_T.csv')
+pcr_cases = pd.read_csv('https://raw.githubusercontent.com/felipepalma1/0000_CL_Datos-COVID19_MINSAL/refs/heads/master/output/producto7/PCR_T.csv')
 pcr_cases = pcr_cases.rename(columns={'Region':'Fecha'})
 pcr_cases = pcr_cases.drop([0,1])
 pcr_cases = pcr_cases.set_index('Fecha')
