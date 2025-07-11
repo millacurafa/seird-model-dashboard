@@ -9,21 +9,25 @@ import plotly.express as px
 
 #Figs to display
 
-fig1 = px.line(sv.df['Casos totales']).update_layout(title= "National cases",
-                    yaxis_title='Number of National cases',
-                    xaxis_title='Date', 
-                    template='simple_white')
+fig1 = px.line(sv.df['Casos totales'], 
+                    template='simple_white',
+                    title= "National cases",
+                    labels=dict(y='Number of National cases',
+                    x='Date'))
 
-fig2 = px.line(sv.df_region_current_bypop['bypop']
-    ).update_layout(title= "Regional cases",
-                    yaxis_title='Number of Regional cases',
-                    xaxis_title='Date', 
-                    template='simple_white')
-fig3 = px.line(sv.df_seird
-    ).update_layout(title='SEIRD model real data',
-                    yaxis_title='SEIRD cases',
-                    xaxis_title='Date', 
-                    template='simple_white')
+fig2 = px.line(
+    sv.df_region_current_bypop['bypop'],
+    template='simple_white',
+    title="Regional cases",
+    labels=dict(y='Number of Regional cases', x='Date')
+)
+
+fig3 = px.line(
+    sv.df_seird,
+    template='simple_white',
+    title='SEIRD model real data',
+    labels=dict(y='SEIRD cases', x='Date')
+)
 
 fig4 = sv.plotlyseirdgo(sv.t, sv.S, sv.E, sv.I, sv.R, sv.D)
 
@@ -433,39 +437,39 @@ tab_4 = dbc.Row([
                                 ),
                             ]),
                         ]),
-                        dbc.CardGroup([
+                        dbc.CardGroup([html.Div([
                                 dbc.Label('Probability of going to ICU when infected (%)'),
                                 html.Br(),
                                 dcc.Slider(
                                     id='seirdmo_p_I_to_C',
-                                    min=0.1,
+                                    min=1,
                                     max=100.0,
-                                    step=0.1,
+                                    step=10.0,
                                     value=20.0,
                                     tooltip={'always_visible': False, "placement": "bottom"}
-                                ),
+                                )]),
                             ]),
-                            dbc.CardGroup([
+                            dbc.CardGroup([html.Div([
                                     dbc.Label('Probability of dying in ICU (%)'),
                                     dcc.Slider(
                                         id='seirdmo_p_C_to_D',
-                                        min=0.1,
+                                        min=1,
                                         max=100.0,
-                                        step=0.1,
+                                        step=10.0,
                                         value=5.0,
                                         tooltip={'always_visible': False, "placement": "bottom"}
-                                    ),
+                                    )]),
                             ]),
-                            dbc.CardGroup([
+                            dbc.CardGroup([html.Div([
                                     dbc.Label('Reproduction rate (R) over time'),
                                     dcc.Slider(
                                         id='seirdmo_r0_slider',
                                         min=0.1,
                                         max=10.0,
-                                        step=0.1,
+                                        step=0.2,
                                         value=2.0,
                                         tooltip={'always_visible': False, "placement": "bottom"}
-                                    ),
+                                    )]),
                             ]),
                             
                             dbc.Button("Apply", id="submit_button_state_four",
