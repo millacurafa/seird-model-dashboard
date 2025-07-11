@@ -11,16 +11,19 @@ import plotly.express as px
 
 fig1 = px.line(sv.df['Casos totales']).update_layout(title= "National cases",
                     yaxis_title='Number of National cases',
-                    xaxis_title='Date')
+                    xaxis_title='Date', 
+                    template='simple_white')
 
 fig2 = px.line(sv.df_region_current_bypop['bypop']
     ).update_layout(title= "Regional cases",
                     yaxis_title='Number of Regional cases',
-                    xaxis_title='Date')
+                    xaxis_title='Date', 
+                    template='simple_white')
 fig3 = px.line(sv.df_seird
     ).update_layout(title='SEIRD model real data',
                     yaxis_title='SEIRD cases',
-                    xaxis_title='Date')
+                    xaxis_title='Date', 
+                    template='simple_white')
 
 fig4 = sv.plotlyseirdgo(sv.t, sv.S, sv.E, sv.I, sv.R, sv.D)
 
@@ -264,56 +267,58 @@ tab_1 = dbc.Row([
 
 ## Tab 2
 
-tab_2 = dbc.Row([ 
-            dbc.Col(
-                html.Div([
-
-                        dbc.CardGroup([
-                            dbc.Label('Choose a date'),
-                            html.Br(),
-                            dcc.DatePickerRange(
-                                start_date=dt(2020, 1, 1),
-                                end_date=dt.today(),
-                                display_format="YYYY-MM-DD",
-                                end_date_placeholder_text='Select a date!',
-                                id='regional_datepicker',
-                                day_size = 30
-                            )
-                        ]),
-                        dbc.CardGroup([
-                            dbc.Label('Choose data to display'),
-                            html.Br(),
-                            dcc.Dropdown(
-                                options=[
-                                    {'label': 'Total cases', 'value': 'total'},
-                                    {'label': 'Active cases', 'value': 'active'},
-                                    {'label': 'Deaths', 'value': 'deaths'},
-                                    {'label': 'Critical cases', 'value': 'uci'},
-                                    {'label': 'Total PCR exams', 'value': 'pcr'},
-                                ],
-                                multi=False,
-                                value='active',
-                                id='regional_cases'
-                                
-                            )
-                        ]), 
-                        
-                        dbc.Button("Apply", id="submit_button_state_two",
-                                color="primary")
-                    ]),
-                    width=3,
-                    style= {
-                            "margin-left": "2rem",
-                            "padding": "2rem 1rem",
-                            "background-color": "#f8f9fa",
-                            "left":0,
-                            "top": 0,
-                            "bottom": 0,
-                        }
-                ), 
-            
-            main_content_two
+tab_2 = dbc.Row([
+    dbc.Col(
+        html.Div([
+            dbc.CardGroup([
+                dbc.Label('Choose a date'),
+                html.Br(),
+                dcc.DatePickerRange(
+                    start_date=dt(2020, 1, 1),
+                    end_date=dt.today(),
+                    display_format="YYYY-MM-DD",
+                    end_date_placeholder_text='Select a date!',
+                    id='regional_datepicker',
+                    day_size=30
+                )
             ]),
+            html.Br(),
+            dbc.CardGroup([
+                dbc.Label('Choose data to display'),
+                html.Br(),
+                dcc.Dropdown(
+                    options=[
+                        {'label': 'Total cases', 'value': 'total'},
+                        {'label': 'Active cases', 'value': 'active'},
+                        {'label': 'Deaths', 'value': 'deaths'},
+                        {'label': 'Critical cases', 'value': 'uci'},
+                        {'label': 'Total PCR exams', 'value': 'pcr'},
+                    ],
+                    multi=False,
+                    value='active',
+                    id='regional_cases'
+                )
+            ]),
+            html.Br(),
+            dbc.Button(
+                "Apply",
+                id="submit_button_state_two",
+                color="primary",
+                className="mt-2"
+            )
+        ]),
+        width=3,
+        style={
+            "margin-left": "2rem",
+            "padding": "2rem 1rem",
+            "background-color": "#f8f9fa",
+            "left": 0,
+            "top": 0,
+            "bottom": 0,
+        }
+    ),
+    main_content_two
+])
 
 ## Tab 3
 
