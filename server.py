@@ -34,7 +34,7 @@ df_deaths_current = df_deaths_total.pivot(
   index="Fecha", columns="Region", values="Casos fallecidos"
 )
 
-df_deaths_total["bypop"] = df_deaths_total["Casos fallecidos"] / (df_deaths_total["Poblacion"] / 1000)
+df_deaths_total.loc[:, "bypop"] = df_deaths_total["Casos fallecidos"] / (df_deaths_total["Poblacion"] / 1000)
 df_deaths_current_bypop = df_deaths_total.pivot(
   index="Fecha", columns="Region", values=["bypop", "Casos fallecidos"]
 )
@@ -238,11 +238,11 @@ S, E, I, R, D = ret.T
 
 def plotlyseirdgo(t, S, E, I, R, D):
       fig = go.Figure()
-      fig.add_trace(go.Line(name="Susceptible", x=t, y=S, line_color="dark blue"))
-      fig.add_trace(go.Line(name="Exposed", x=t, y=E, line_color="gold"))
-      fig.add_trace(go.Line(name="Infectious", x=t, y=I, line_color="red"))
-      fig.add_trace(go.Line(name="Recovered", x=t, y=R, line_color="green"))
-      fig.add_trace(go.Line(name="Deaths", x=t, y=D, line_color="black"))
+      fig.add_trace(go.Scatter(name="Susceptible", x=t, y=S, line=dict(color="dark blue")))
+      fig.add_trace(go.Scatter(name="Exposed", x=t, y=E, line=dict(color="gold")))
+      fig.add_trace(go.Scatter(name="Infectious", x=t, y=I, line=dict(color="red")))
+      fig.add_trace(go.Scatter(name="Recovered", x=t, y=R, line=dict(color="green")))
+      fig.add_trace(go.Scatter(name="Deaths", x=t, y=D, line=dict(color="black")))
       fig.update_layout(title='SEIRD model simulation',
                       yaxis_title='SEIRD cases',
                       xaxis_title='Number of days', 
